@@ -46,12 +46,12 @@ alias pgrep='pgrep -lf'
 alias df='df -h'
 alias du='du -h -c'
 alias ps='ps'
-alias ping='ping -c 5'
+#alias ping='ping -c 5'
 alias mkdir='mkdir -p'
 alias grep='grep --colour'
 
 export INPUTRC=~/.inputrc
-export PROMPT_COMMAND='echo -n -e "\033k\033\0134"'
+#export PROMPT_COMMAND='echo -n -e "\033k\033\0134"'
 
 # functions so you don't have to type '&' for graphical binaries
 function display
@@ -65,10 +65,11 @@ if [ `uname` == "Darwin" ]; then
     alias vim='mvim -v -p'
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"
-else
+#else
     # Non-mac specific code
     # Bind caps lock to escape
-    xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' -e 'keycode 0x52 = Escape'
+    #xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' -e 'keycode 0x52 = Escape'
+
 fi
 
 function pyopen() {
@@ -139,9 +140,11 @@ GREEN="\[\033[0;32m\]"
 LIGHT_PURPLE="\[\033[1;34m\]"
 WHITE="\[\033[1;20m\]"
 CYAN="\[\033[1;35m\]"
-export PS1="$WHITE\h|$CYAN\u $YELLOW\$(parse_git_branch)$LIGHT_PURPLE/\W:\[\033[0m\] "
+#export PS1="$WHITE\h|$CYAN\u $YELLOW\$(parse_git_branch)$LIGHT_PURPLE/\W:\[\033[0m\] "
 
-BASEPROMPT="$WHITE`lastcommandfailed`[\A] \h|\[\e${PINK_COLOR}\]\u\[\e${ORANGE_COLOR}\] `activevirtualenv`\[\e${RED_COLOR}\]`parse_git_branch`\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
+#BASEPROMPT="$WHITE`lastcommandfailed`[\A] \h|\[\e${PINK_COLOR}\]\u \[\e${ORANGE_COLOR}\] `activevirtualenv`\[\e${RED_COLOR}\][\$(parse_git_branch)]\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
+
+BASEPROMPT="$WHITE\$(lastcommandfailed)[\A] \h|\[\e${PINK_COLOR}\]\u \[\e${ORANGE_COLOR}\]\$(activevirtualenv)${RED}\$(parse_git_branch)\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
 PROMPT="${BASEPROMPT}\n\[\e${CYAN_COLOR}\]$ \[\e${DEFAULT_COLOR}\]"
 export PS1=$PROMPT
 
