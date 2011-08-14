@@ -13,10 +13,11 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
 function lastcommandfailed() {
   code=$?
+  #echo $code
   if [ $code != 0 ]; then
-    echo -n $'\033[37;1m[exited \033[31;1m'
+    echo -n $'\033[37;1m(exited \033[31;1m'
     echo -n $code
-    echo -n $'\033[37;1m] '
+    echo -n $'\033[37;1m) '
   fi
 }
 
@@ -144,7 +145,7 @@ CYAN="\[\033[1;35m\]"
 
 #BASEPROMPT="$WHITE`lastcommandfailed`[\A] \h|\[\e${PINK_COLOR}\]\u \[\e${ORANGE_COLOR}\] `activevirtualenv`\[\e${RED_COLOR}\][\$(parse_git_branch)]\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
 
-BASEPROMPT="$WHITE\$(lastcommandfailed)[\A] \h|\[\e${PINK_COLOR}\]\u \[\e${ORANGE_COLOR}\]\$(activevirtualenv)${RED}\$(parse_git_branch)\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
+BASEPROMPT="[\A] \h|\[\e${PINK_COLOR}\]\u \$(lastcommandfailed)\[\e${ORANGE_COLOR}\]\$(activevirtualenv)${RED}\$(parse_git_branch)\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
 PROMPT="${BASEPROMPT}\n\[\e${CYAN_COLOR}\]$ \[\e${DEFAULT_COLOR}\]"
 export PS1=$PROMPT
 
