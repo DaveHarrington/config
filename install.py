@@ -8,3 +8,4 @@ for file in os.listdir("."):
 		new = os.path.join(os.environ['HOME'], file)
 		os.symlink(original, new)
 		print "Symlinked %s -> %s" % (original, new)
+#test
