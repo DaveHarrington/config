@@ -2,10 +2,12 @@ filetype off
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 filetype plugin indent on
+set wildmode=longest,list,full
 :set wildmenu
 :set nu 
 ":set smartindent
 :set showmatch
+set mat=5
 :set ai
 :set ts=4
 :set sw=4 " treat 4 spaces as a tab when deleting4
@@ -24,6 +26,10 @@ set path+=$PWD/**
 nmap <C-V> "+gP
 imap <C-V> <ESC><C-V>i
 vmap <C-C> "+y
+
+" ctrl tab to change tabs
+noremap <c-tab> :tabnext<cr>
+noremap <c-s-tab> :tabprev<cr>
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -89,5 +95,15 @@ map <F8> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 " More ctags stuff: http://amix.dk/blog/post/19329 
 " Generate ctags data for a PHP project: ctags-exuberant -f ~/.vim/mytags/mendeley -h ".php" -R --totals=yes --tag-relative=yes --PHP-kinds=+cf --regex-PHP='/abstract class ([^ ]*)/\1/c/' --regex-PHP='/interface ([^ ]*)/\1/c/' --regex-PHP='/(public |static |abstract |protected |private )+function ([^ (]*)/\2/f/'
 "
+
+"Dave's settings
 inoremap <C-j> <ESC>
+
+"Keep backups seperate
+silent execute '!mkdir -p ~/.vim_backups'
+set backupdir=~/.vim_backups//
+set directory=~/.vim_backups//
+
+"Open a window with shortcuts
+belowright 37vsplit ~/config/vim_shortcuts.txt
 

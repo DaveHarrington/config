@@ -104,19 +104,19 @@ function parse_git_dirty {
   renamed=`  echo -n "${status}" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
   bits=''
   if [ "${dirty}" == "0" ]; then
-    bits="${bits}*"
+      bits="${bits}[dirty]"
   fi
   if [ "${untracked}" == "0" ]; then
-    bits="${bits}?"
+    bits="${bits}[untracked]"
   fi
   #if [ "${newfile}" == "0" ]; then
   #  bits="${bits}*"
   #fi
   if [ "${ahead}" == "0" ]; then
-    bits="${bits}+"
+    bits="${bits}[ahead]"
   fi
   if [ "${renamed}" == "0" ]; then
-    bits="${bits}>"
+    bits="${bits}[renamed]"
   fi
   echo "${bits}"
 }
