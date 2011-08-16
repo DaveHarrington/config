@@ -1,0 +1,42 @@
+Page u/d        Ctrl b/f
+Paragraph       { }
+Find            F f
+Before          T t
+(next)          , ;
+Word            b w
+Matching ()     %
+List regs       :reg
+Last edit       '.
+
+Vert split      :vsp
+Next split      Ctrl-w
+Split left      Ctrl-w H
+Split up        Ctrl-w K
+Split eq size   Ctrl-w =
+Split wider     Ctrl-w +
+Split on tag    Ctrl-w ]
+
+File Tree               
+Ext. Cmd        :!cmd
+
+Search this     *
+Goto def        gd
+Goto global     gD
+Goto file       gf
+Interactive     \i
+Next match      N n
+
+Set work dir    :cd %:p:h
+
+Set mark        am
+Return mark     `a
+List mark       :marks
+Last edit (l)   '.
+Last edit
+
+# Paste indenting
+before paste    set paste
+after paste     set nopaste
+
+Comment         ????
+Tog case        ~
