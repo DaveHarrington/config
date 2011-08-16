@@ -1,3 +1,6 @@
+" change the mapleader from \ to ,
+let mapleader=","
+
 filetype off
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
@@ -37,6 +40,10 @@ set autoread
 set nobackup
 set nowb
 set noswapfile
+
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 if has("gui_running")
   if has("mac")
@@ -98,6 +105,23 @@ map <F8> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 "Dave's settings
 inoremap <C-j> <ESC>
+nnoremap ; :
+
+"Scroll through long lines properly
+nnoremap j gj
+nnoremap k gk
+
+"Clear highlights with ,/
+nmap <silent> ,/ :nohlsearch<CR>
+
+"Save file with sudo if you forgot with w!!
+cmap w!! w !sudo tee % >/dev/null
+
+"No arrow keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
 
 "Keep backups seperate
 silent execute '!mkdir -p ~/.vim_backups'

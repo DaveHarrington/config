@@ -3,7 +3,11 @@ Paragraph       { }
 Find            F f
 Before          T t
 (next)          , ;
-Word            b w
+
+Word            b w (e)
+Sentence        ( )
+Paragraph       { }
+
 Matching ()     %
 List regs       :reg
 Last edit       '.
@@ -40,3 +44,7 @@ after paste     set nopaste
 
 Comment         ????
 Tog case        ~
+
+Edit vimrc      ,ev
+Save vimrc      ,sv
+
