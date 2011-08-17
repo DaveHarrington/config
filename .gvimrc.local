@@ -4,3 +4,10 @@ color desert
 "Open a window with shortcuts
 belowright 37vsplit ~/config/vim_shortcuts.txt
 
+" Correct janus madness
+
+" Command-T for CommandT
+  macmenu &File.New\ Tab key=<D-t>
+  map <C-t> :CommandT<CR>
+  imap <C-t> <Esc>:CommandT<CR>
+

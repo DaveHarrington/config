@@ -20,7 +20,7 @@ Split eq size   Ctrl-w =
 Split wider     Ctrl-w +
 Split on tag    Ctrl-w ]
 
-File Tree               
+File Tree       ,n
 Ext. Cmd        :!cmd
 
 Search this     *
@@ -42,7 +42,7 @@ Last edit
 before paste    set paste
 after paste     set nopaste
 
-Comment         ????
+Tog comment     ,c <space>
 Tog case        ~
 
 Edit vimrc      ,ev
