@@ -48,3 +48,6 @@ Tog case        ~
 Edit vimrc      ,ev
 Save vimrc      ,sv
 
+Clear hlight    ,/
+Force save      w!!
+Infile dir      <C-p>

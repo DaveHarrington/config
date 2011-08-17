@@ -1,0 +1,37 @@
+" change the mapleader from \ to ,
+let mapleader=","
+
+" enable using the mouse if terminal emulator
+" supports it (xterm does)
+set mouse=a
+
+set nobackup
+set noswapfile
+
+" ctrl tab to change tabs
+noremap <c-tab> :tabnext<cr>
+noremap <c-s-tab> :tabprev<cr>
+
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
+inoremap <C-j> <ESC>
+nnoremap ; :
+
+"Scroll through long lines properly
+nnoremap j gj
+nnoremap k gk
+
+"Clear highlights with ,/
+nmap <silent> ,/ :nohlsearch<CR>
+
+"Save file with sudo if you forgot with w!!
+cmap w!! w !sudo tee % >/dev/null
+
+"No arrow keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+
