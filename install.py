@@ -30,4 +30,4 @@ for file in dir_list:
 print "Installing Janus"
 subprocess.call(["git", "submodule", "init"])
 subprocess.call(["git", "submodule", "update"])
-subprocess.call(["rake"], ".vim")
+subprocess.call(["rake"], cwd=".vim")
