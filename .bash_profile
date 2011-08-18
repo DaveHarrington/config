@@ -63,6 +63,7 @@ function display
 if [ `uname` == "Darwin" ]; then
     # Mac specific code
     alias ls='ls -G'
+    alias ll='ls -lG'
     alias vim='mvim -v -p'
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"

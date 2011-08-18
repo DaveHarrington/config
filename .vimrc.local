@@ -13,10 +13,11 @@ noremap <c-tab> :tabnext<cr>
 noremap <c-s-tab> :tabprev<cr>
 
 " Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nmap <silent> <leader>ev :e ~/config/.vimrc.local<CR>
+nmap <silent> <leader>sv :so ~/config/.vimrc.local<CR>
 
 inoremap <C-j> <ESC>
+noremap <C-j> <ESC>
 nnoremap ; :
 
 "Scroll through long lines properly
