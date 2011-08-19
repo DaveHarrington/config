@@ -51,3 +51,21 @@ Save vimrc      ,sv
 Clear hlight    ,/
 Force save      w!!
 Infile dir      <C-p>
+
+
+Git Workflow:
+Update master/origin
+  git fetch
+Update and merge
+  git pull
+New branch
+  git co -b <branch>
+Push branch back to origin
+  git push origin <branch>
+Ammend last commit:
+  git commit --amend -C HEAD
+
+Screen Cheatsheet:
+  List:     -ls
+  Detach:   C-a Cd
+  Reattach: -r

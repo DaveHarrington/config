@@ -51,6 +51,9 @@ alias ps='ps'
 alias mkdir='mkdir -p'
 alias grep='grep --colour'
 
+# Git alias
+alias gst='git status'
+
 export INPUTRC=~/.inputrc
 #export PROMPT_COMMAND='echo -n -e "\033k\033\0134"'
 
@@ -146,7 +149,7 @@ CYAN="\[\033[1;35m\]"
 
 #BASEPROMPT="$WHITE`lastcommandfailed`[\A] \h|\[\e${PINK_COLOR}\]\u \[\e${ORANGE_COLOR}\] `activevirtualenv`\[\e${RED_COLOR}\][\$(parse_git_branch)]\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
 
-BASEPROMPT="[\A] \h|\[\e${PINK_COLOR}\]\u \$(lastcommandfailed)\[\e${ORANGE_COLOR}\]\$(activevirtualenv)${RED}\$(parse_git_branch)\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
+BASEPROMPT="[\A] \[\e${PINK_COLOR}\]\h\[\e${DEFAULT_COLOR}\]:\u \$(lastcommandfailed)\[\e${ORANGE_COLOR}\]\$(activevirtualenv)${RED}\$(parse_git_branch)\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
 PROMPT="${BASEPROMPT}\n\[\e${CYAN_COLOR}\]$ \[\e${DEFAULT_COLOR}\]"
 export PS1=$PROMPT
 
