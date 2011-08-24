@@ -70,7 +70,9 @@ if [ `uname` == "Darwin" ]; then
     alias vim='mvim -v -p'
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"
-#else
+else
+    keychain id_rsa id_dsa
+    . ~/.keychain/`uname -n`-sh
     # Non-mac specific code
     # Bind caps lock to escape
     #xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' -e 'keycode 0x52 = Escape'
