@@ -71,12 +71,16 @@ if [ `uname` == "Darwin" ]; then
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"
 else
-    keychain id_rsa id_dsa
-    . ~/.keychain/`uname -n`-sh
+  if [ $USER != "root" ]; then
+  ### START-Keychain ###
+  # Let  re-use ssh-agent and/or gpg-agent between logins
+  /usr/bin/keychain $HOME/.ssh/id_rsa
+  source $HOME/.keychain/$HOSTNAME-sh
+  ### End-Keychain ###
     # Non-mac specific code
     # Bind caps lock to escape
     #xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape' -e 'keycode 0x52 = Escape'
-
+  fi
 fi
 
 function pyopen() {
