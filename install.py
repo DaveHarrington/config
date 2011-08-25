@@ -13,6 +13,8 @@ for file in dir_list:
 
     if not file in ignores:
         original = os.path.abspath(file)
+				if not file[0] == '.':
+					file = '.' + file
         new = os.path.join(os.environ['HOME'], file)
 
         if force or os.path.islink(new):
