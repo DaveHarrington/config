@@ -53,6 +53,7 @@ alias grep='grep --colour'
 
 # Git alias
 alias gst='git status'
+alias grb='git branch -r | grep -v "origin\/v"'
 
 export INPUTRC=~/.inputrc
 #export PROMPT_COMMAND='echo -n -e "\033k\033\0134"'

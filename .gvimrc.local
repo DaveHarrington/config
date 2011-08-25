@@ -2,12 +2,10 @@ set guifont=Menlo:h15
 color desert
 
 "Open a window with shortcuts
-belowright 37vsplit ~/config/vim_shortcuts.txt
-
-" Correct janus madness
+"belowright 37vsplit ~/config/vim_shortcuts.txt
 
 " Command-T for CommandT
-  macmenu &File.New\ Tab key=<D-t>
-  map <C-t> :CommandT<CR>
-  imap <C-t> <Esc>:CommandT<CR>
+macmenu &File.New\ Tab key=<D-t>
+map <C-t> :CommandT<CR>
+imap <C-t> <Esc>:CommandT<CR>
 
