@@ -77,7 +77,7 @@ if [ `uname` == "Darwin" ]; then
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"
 
-    function tab() {
+    function mvimtab() {
       if [ "$MVIM_SESSION" ==  "" ]
       then
         count=`mvim --serverlist | wc -l | tr -d ' '`
@@ -124,7 +124,7 @@ alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C
 function parse_git_dirty {
   status=`git status 2> /dev/null`
   dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
-  not_staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes not staged for commit" 2> /dev/null; echo "$?"`
+  not_staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes" 2> /dev/null; echo "$?"`
   staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes to be committed" 2> /dev/null; echo "$?"`
   untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
   ahead=`    echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
@@ -143,16 +143,18 @@ function parse_git_dirty {
   if [ "${untracked}" == "0" ]; then
     bits="${bits}[untracked]"
   fi
-  #if [ "${newfile}" == "0" ]; then
-  #  bits="${bits}*"
-  #fi
+  if [ "${newfile}" == "0" ]; then
+    bits="${bits}[new file]"
+  fi
   if [ "${ahead}" == "0" ]; then
     bits="${bits}[ahead]"
   fi
   if [ "${renamed}" == "0" ]; then
     bits="${bits}[renamed]"
   fi
-  #echo "${bits}"
+  if [ ${#bits} > 1 ]; then
+    echo "${bits}"
+  fi
 }
 
 function parse_git_branch {
