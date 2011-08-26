@@ -242,6 +242,7 @@ endfun
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
 " load the plugin and indent settings for the detected filetype
+filetype on
 filetype plugin indent on
 
 " Use modeline overrides
