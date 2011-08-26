@@ -14,6 +14,12 @@ set noswapfile
 "Overwrite crazy janus settings
 au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 wrap list
 
+"***********************************************"
+" Try to keep all custom keybindings in one place
+" Command-/ to toggle comments
+map <D-/> <plug>NERDCommenterToggle<CR>
+imap <D-/> <Esc><plug>NERDCommenterToggle<CR>i
+
 "Remove all trailing whitespace
 :nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
@@ -25,29 +31,26 @@ noremap <c-s-tab> :tabprev<cr>
 nmap <silent> <leader>ev :e ~/config/.vimrc.local<CR>
 nmap <silent> <leader>sv :so ~/config/.vimrc.local<CR>
 
+"Ctrl j is escape
 inoremap <C-j> <ESC>
 noremap <C-j> <ESC>
-nnoremap ; :
 
-"Scroll through long lines properly
-nnoremap j gj
-nnoremap k gk
+nnoremap ; :
 
 "Don't drop select after indent
 :vnoremap > >gv
 :vnoremap < <gv
-
-"map indent to tab
-:vnoremap <Tab> >gv
-:vnoremap <S-Tab> <gv
-:noremap <Tab> >
-:noremap <S-Tab> <
 
 "Clear highlights with ,/
 nmap <silent> ,/ :nohlsearch<CR>
 
 "Save file with sudo if you forgot with w!!
 cmap w!! w !sudo tee % >/dev/null
+
+"***********************************************"
+"Scroll through long lines properly
+nnoremap j gj
+nnoremap k gk
 
 "No arrow keys
 map <up> <nop>
