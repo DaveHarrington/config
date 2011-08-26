@@ -76,6 +76,16 @@ if [ `uname` == "Darwin" ]; then
     alias vim='mvim -v -p'
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"
+
+    function tab() {
+      if [ "$MVIM_SESSION" ==  "" ]
+      then
+        count=`mvim --serverlist | wc -l | tr -d ' '`
+        export MVIM_SESSION="VIM"$count
+      fi
+      mvim --servername $MVIM_SESSION --remote-tab-silent $1
+    }
+
 else
   if [ $USER != "root" ]; then
   ### START-Keychain ###
