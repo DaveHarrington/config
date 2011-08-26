@@ -10,7 +10,7 @@ let mapleader = ','
 map <Leader>n :NERDTreeToggle<CR>
 
 " Create a tags file - run at the base of project
-map <f12> :!ctags -f .cvsignore -R .<cr>
+map <f12> :!ctags -f ._tags -R .<cr>
 
 " Command-/ to toggle comments
 map <D-/> <plug>NERDCommenterToggle<CR>
@@ -81,6 +81,10 @@ let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
 
 " Command-T configuration
 let g:CommandTMaxHeight=20
+
+" PyFlakes highlighting
+highlight clear SpellBad
+highlight SpellBad term=underline cterm=underline gui=underline
 
 "Other boring vim stuff
 set nocompatible
@@ -174,7 +178,7 @@ for p in sys.path:
 EOF
 
 "set tags=$HOME/.vim/tags/python27.ctags
-set tags=.cvsignore
+set tags=._tags
 
 " Use :make to see syntax errors. (:cn and :cp to move around, :dist to see
 " all errors)
