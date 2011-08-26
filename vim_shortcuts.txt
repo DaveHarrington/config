@@ -41,7 +41,7 @@ Last edit
 # Paste indenting
 before paste    set paste
 after paste     set nopaste
-
+Fix indents     gg=G
 Tog comment     ,c <space>
 Tog case        ~
 
@@ -52,6 +52,9 @@ Clear hlight    ,/
 Force save      w!!
 Infile dir      <C-p>
 
+Show commands   q:
+
+Diff in vim     :Gdiff
 
 Git Workflow:
 Update master/origin

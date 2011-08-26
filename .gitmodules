@@ -1,18 +1,30 @@
-[submodule ".vim/bundle/nerdttree"]
-	path = .vim/bundle/nerdttree
+[submodule "vim/pathogen"]
+	path = vim/bundles/pathogen
+	url = https://github.com/tpope/vim-pathogen.git
+[submodule "vim/bundle/vim-pathogen"]
+	path = vim/bundle/vim-pathogen
+	url = https://github.com/tpope/vim-pathogen.git
+[submodule "vim/bundle/fugitive"]
+	path = vim/bundle/fugitive
+	url = http://github.com/tpope/vim-fugitive.git
+[submodule "vim/bundle/nerdtree"]
+	path = vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
-[submodule ".vim/bundle/vim-css-color"]
-	path = .vim/bundle/vim-css-color
-	url = https://github.com/skammer/vim-css-color.git
-[submodule ".vim/bundle/vim-javascript"]
-	path = .vim/bundle/vim-javascript
-	url = https://github.com/pangloss/vim-javascript.git
-[submodule ".vim/bundle/vim-json"]
-	path = .vim/bundle/vim-json
-	url = https://github.com/chrismetcalf/vim-json.git
-[submodule ".vim/bundle/vim-session"]
-	path = .vim/bundle/vim-session
-	url = https://github.com/xolox/vim-session.git
-[submodule ".vim"]
-	path = .vim
-	url = git://github.com/carlhuda/janus.git
+[submodule "vim/bundle/snipmate"]
+	path = vim/bundle/snipmate
+	url = https://github.com/msanders/snipmate.vim.git
+[submodule "vim/bundle/command-t"]
+	path = vim/bundle/command-t
+	url = git://git.wincent.com/command-t.git
+[submodule "vim/bundle/nerdcommenter"]
+	path = vim/bundle/nerdcommenter
+	url = git://github.com/scrooloose/nerdcommenter.git
+[submodule "vim/bundle/pydoc"]
+	path = vim/bundle/pydoc
+	url = git://github.com/fs111/pydoc.vim.git
+[submodule "vim/bundle/pyflakes-vim"]
+	path = vim/bundle/pyflakes-vim
+	url = git://github.com/kevinw/pyflakes-vim.git
+[submodule "vim/ftplugin/python/pyflakes"]
+	path = vim/ftplugin/python/pyflakes
+	url = https://github.com/kevinw/pyflakes.git

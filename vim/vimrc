@@ -1,0 +1,264 @@
+"Pathogen Init
+source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
+call pathogen#infect()
+
+"***********************************************"
+" All custom keybindings
+"***********************************************"
+let mapleader = ','
+
+map <Leader>n :NERDTreeToggle<CR>
+
+" Create a tags file - run at the base of project
+map <f12> :!ctags -f ._tags -R .<cr>
+
+" Command-/ to toggle comments
+map <D-/> <plug>NERDCommenterToggle<CR>
+imap <D-/> <Esc><plug>NERDCommenterToggle<CR>i
+
+" Ctrl T for command T
+map <C-t> :CommandT<CR>
+imap <C-t> <Esc>:CommandT<CR>
+
+"Remove all trailing whitespace
+:nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" Opens an edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>e
+map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" Opens a tab edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>t
+map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" Inserts the path of the currently edited file into a command
+" Command mode: Ctrl+P
+cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
+" % to bounce from do to end etc.
+runtime! macros/matchit.vim
+
+" F7/Shift-F7 add/remove a breakpoint (pdb.set_trace)
+
+" `gf` jumps to the filename under the cursor.  Point at an import statement
+" and jump to it!
+
+" toggle fold = za
+" fold all   = zM
+" unfold all = zR
+"************************"
+" More obvious:
+
+" Auto completion with ctrl-space
+inoremap <C-SPACE> <C-n>
+
+" ctrl tab to change tabs
+noremap <c-tab> :tabnext<cr>
+noremap <c-s-tab> :tabprev<cr>
+
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
+"Ctrl j is escape
+inoremap <C-j> <ESC>
+noremap <C-j> <ESC>
+
+nnoremap ; :
+nnoremap ' `
+nnoremap ` '
+
+"Clear highlights with ,/
+nmap <silent> ,/ :nohlsearch<CR>
+
+"Save file with sudo if you forgot with w!!
+cmap w!! w !sudo tee % >/dev/null
+
+"***********************************************"
+
+" NERDTree configuration
+let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
+
+" Command-T configuration
+let g:CommandTMaxHeight=20
+
+" PyFlakes highlighting
+highlight clear SpellBad
+highlight SpellBad term=underline cterm=underline gui=underline
+
+"Other boring vim stuff
+set nocompatible
+set title
+set hidden
+set number
+set ruler
+set history=1000
+set scrolloff=3
+syntax on
+
+"folding settings
+set foldmethod=indent   "fold based on indent
+set foldnestmax=10      "deepest fold is 10 levels
+set nofoldenable        "dont fold by default
+set foldlevel=1         "this is just what i use
+
+" Intuitive backspacing in insert mode
+set backspace=indent,eol,start
+
+" Set encoding
+set encoding=utf-8
+
+" Whitespace stuff
+set nowrap
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set list listchars=tab:\ \ ,trail:·
+
+" Searching
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+" Tab completion
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
+
+" Status bar
+set laststatus=2
+
+" enable using the mouse if terminal emulator
+" supports it (xterm does)
+set mouse=a
+
+" Eh, swapfiles
+set nobackup
+set noswapfile
+
+"Don't drop select after indent
+:vnoremap > >gv
+:vnoremap < <gv
+
+"Scroll through long lines properly
+nnoremap j gj
+nnoremap k gk
+
+"No arrow keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+
+" Python specific
+" More syntax highlighting.
+let python_highlight_all = 1
+
+" Wrap at 72 chars for comments.
+set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
+
+au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 wrap list
+
+" Smart indenting
+set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+
+let g:pydoc_cmd = "/usr/bin/pydoc"
+let g:pydoc_open_cmd = "vsplit"
+
+" `gf` jumps to the filename under the cursor.  Point at an import statement
+" and jump to it!
+python << EOF
+import os
+import sys
+import vim
+for p in sys.path:
+    if os.path.isdir(p):
+        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+EOF
+
+"set tags=$HOME/.vim/tags/python27.ctags
+set tags=._tags
+
+" Use :make to see syntax errors. (:cn and :cp to move around, :dist to see
+" all errors)
+set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+
+" Use F7/Shift-F7 to add/remove a breakpoint (pdb.set_trace)
+" Totally cool.
+python << EOF
+def SetBreakpoint():
+    import re
+    nLine = int( vim.eval( 'line(".")'))
+
+    strLine = vim.current.line
+    strWhite = re.search( '^(\s*)', strLine).group(1)
+
+    vim.current.buffer.append(
+       "%(space)spdb.set_trace() %(mark)s Breakpoint %(mark)s" %
+         {'space':strWhite, 'mark': '#' * 30}, nLine - 1)
+
+    for strLine in vim.current.buffer:
+        if strLine == "import pdb":
+            break
+    else:
+        vim.current.buffer.append( 'import pdb', 0)
+        vim.command( 'normal j1')
+
+vim.command( 'map <f7> :py SetBreakpoint()<cr>')
+
+def RemoveBreakpoints():
+    import re
+
+    nCurrentLine = int( vim.eval( 'line(".")'))
+
+    nLines = []
+    nLine = 1
+    for strLine in vim.current.buffer:
+        if strLine == "import pdb" or strLine.lstrip()[:15] == "pdb.set_trace()":
+            nLines.append( nLine)
+        nLine += 1
+
+    nLines.reverse()
+
+    for nLine in nLines:
+        vim.command( "normal %dG" % nLine)
+        vim.command( "normal dd")
+        if nLine < nCurrentLine:
+            nCurrentLine -= 1
+
+    vim.command( "normal %dG" % nCurrentLine)
+
+vim.command( "map <s-f7> :py RemoveBreakpoints()<cr>")
+EOF
+
+" go to defn of tag under the cursor
+fun! MatchCaseTag()
+    let ic = &ic
+    set noic
+    try
+        exe 'tjump ' . expand('<cword>')
+    finally
+       let &ic = ic
+    endtry
+endfun
+nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
+
+" load the plugin and indent settings for the detected filetype
+filetype on
+filetype plugin indent on
+
+" Use modeline overrides
+set modeline
+set modelines=10
+
+" Default color scheme
+color desert
+
+" MacVIM shift+arrow-keys behavior (required in .vimrc)
+let macvim_hig_shift_movement = 1
+
+" Show (partial) command in the status line
+set showcmd
+
