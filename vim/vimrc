@@ -1,45 +1,72 @@
 "Pathogen Init
 source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
-syntax on
-filetype plugin indent on
-
-" enable using the mouse if terminal emulator
-" supports it (xterm does)
-set mouse=a
-
-set nobackup
-set noswapfile
-
-"Overwrite crazy janus settings
-au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 wrap list
 
 "***********************************************"
-" Try to keep all custom keybindings in one place
+" All custom keybindings
+"***********************************************"
+let mapleader = ','
+
+map <Leader>n :NERDTreeToggle<CR>
+
+" Create a tags file - run at the base of project
+map <f12> :!ctags -f .cvsignore -R .<cr>
+
 " Command-/ to toggle comments
 map <D-/> <plug>NERDCommenterToggle<CR>
 imap <D-/> <Esc><plug>NERDCommenterToggle<CR>i
 
+" Ctrl T for command T
+map <C-t> :CommandT<CR>
+imap <C-t> <Esc>:CommandT<CR>
+
 "Remove all trailing whitespace
 :nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" Opens an edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>e
+map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" Opens a tab edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>t
+map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" Inserts the path of the currently edited file into a command
+" Command mode: Ctrl+P
+cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
+" % to bounce from do to end etc.
+runtime! macros/matchit.vim
+
+" F7/Shift-F7 add/remove a breakpoint (pdb.set_trace)
+
+" `gf` jumps to the filename under the cursor.  Point at an import statement
+" and jump to it!
+
+" toggle fold = za
+" fold all   = zM
+" unfold all = zR
+"************************"
+" More obvious:
+
+" Auto completion with ctrl-space
+inoremap <C-SPACE> <C-n>
 
 " ctrl tab to change tabs
 noremap <c-tab> :tabnext<cr>
 noremap <c-s-tab> :tabprev<cr>
 
 " Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e ~/config/.vimrc.local<CR>
-nmap <silent> <leader>sv :so ~/config/.vimrc.local<CR>
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 "Ctrl j is escape
 inoremap <C-j> <ESC>
 noremap <C-j> <ESC>
 
 nnoremap ; :
-
-"Don't drop select after indent
-:vnoremap > >gv
-:vnoremap < <gv
+nnoremap ' `
+nnoremap ` '
 
 "Clear highlights with ,/
 nmap <silent> ,/ :nohlsearch<CR>
@@ -48,6 +75,68 @@ nmap <silent> ,/ :nohlsearch<CR>
 cmap w!! w !sudo tee % >/dev/null
 
 "***********************************************"
+
+" NERDTree configuration
+let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
+
+" Command-T configuration
+let g:CommandTMaxHeight=20
+
+"Other boring vim stuff
+set nocompatible
+set title
+set hidden
+set number
+set ruler
+set history=1000
+set scrolloff=3
+syntax on
+
+"folding settings
+set foldmethod=indent   "fold based on indent
+set foldnestmax=10      "deepest fold is 10 levels
+set nofoldenable        "dont fold by default
+set foldlevel=1         "this is just what i use
+
+" Intuitive backspacing in insert mode
+set backspace=indent,eol,start
+
+" Set encoding
+set encoding=utf-8
+
+" Whitespace stuff
+set nowrap
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set list listchars=tab:\ \ ,trail:·
+
+" Searching
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+" Tab completion
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
+
+" Status bar
+set laststatus=2
+
+" enable using the mouse if terminal emulator
+" supports it (xterm does)
+set mouse=a
+
+" Eh, swapfiles
+set nobackup
+set noswapfile
+
+"Don't drop select after indent
+:vnoremap > >gv
+:vnoremap < <gv
+
 "Scroll through long lines properly
 nnoremap j gj
 nnoremap k gk
@@ -58,23 +147,20 @@ map <down> <nop>
 map <left> <nop>
 map <right> <nop>
 
+" Python specific
 " More syntax highlighting.
 let python_highlight_all = 1
+
+" Wrap at 72 chars for comments.
+set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
+
+au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 wrap list
 
 " Smart indenting
 set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 
-" Auto completion via ctrl-space
-inoremap <C-SPACE> <C-n>
-
-" Get this plugin from http://www.vim.org/scripts/script.php?script_id=1112
-" Pressing "K" takes you to the documentation for the word under the cursor.
-"autocmd filetype python source $HOME/.vim/ftplugin/python_pydoc.vim
-"let g:pydoc_cmd = "/usr/bin/pydoc"
-"let g:pydoc_open_cmd = "vsplit"
-
-" Wrap at 72 chars for comments.
-set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
+let g:pydoc_cmd = "/usr/bin/pydoc"
+let g:pydoc_open_cmd = "vsplit"
 
 " `gf` jumps to the filename under the cursor.  Point at an import statement
 " and jump to it!
@@ -87,23 +173,13 @@ for p in sys.path:
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
 
-" Generate tags with: ctags -R -f ~/.vim/tags/python24.ctags /usr/lib/python2.4/
-" ctrl-[ to go to the tag under the cursor, ctrl-T to go back.
-"set tags+=$HOME/.vim/tags/python26.ctags
+"set tags=$HOME/.vim/tags/python27.ctags
+set tags=.cvsignore
 
 " Use :make to see syntax errors. (:cn and :cp to move around, :dist to see
 " all errors)
 set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-
-" Execute a selection of code (very cool!)
-" Use VISUAL to select a range and then hit ctrl-h to execute it.
-python << EOL
-import vim
-def EvaluateCurrentRange():
-    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
-EOL
-map <C-h> :py EvaluateCurrentRange()
 
 " Use F7/Shift-F7 to add/remove a breakpoint (pdb.set_trace)
 " Totally cool.
@@ -153,5 +229,31 @@ def RemoveBreakpoints():
 vim.command( "map <s-f7> :py RemoveBreakpoints()<cr>")
 EOF
 
-"vim:syntax=vim
+" go to defn of tag under the cursor
+fun! MatchCaseTag()
+    let ic = &ic
+    set noic
+    try
+        exe 'tjump ' . expand('<cword>')
+    finally
+       let &ic = ic
+    endtry
+endfun
+nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
+
+" load the plugin and indent settings for the detected filetype
+filetype plugin indent on
+
+" Use modeline overrides
+set modeline
+set modelines=10
+
+" Default color scheme
+color desert
+
+" MacVIM shift+arrow-keys behavior (required in .vimrc)
+let macvim_hig_shift_movement = 1
+
+" Show (partial) command in the status line
+set showcmd
 

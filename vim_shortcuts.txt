@@ -52,6 +52,8 @@ Clear hlight    ,/
 Force save      w!!
 Infile dir      <C-p>
 
+Show commands   q:
+
 Diff in vim     :Gdiff
 
 Git Workflow:
