@@ -114,13 +114,21 @@ alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C
 function parse_git_dirty {
   status=`git status 2> /dev/null`
   dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
+  not_staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes not staged for commit" 2> /dev/null; echo "$?"`
+  staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes to be committed" 2> /dev/null; echo "$?"`
   untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
   ahead=`    echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
   newfile=`  echo -n "${status}" 2> /dev/null | grep -q "new file:" 2> /dev/null; echo "$?"`
   renamed=`  echo -n "${status}" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
-  bits=''
+  bits=' '
   if [ "${dirty}" == "0" ]; then
       bits="${bits}[dirty]"
+  fi
+  if [ "${not_staged}" == "0" ]; then
+      bits="${bits}[not staged]"
+  fi
+  if [ "${staged}" == "0" ]; then
+      bits="${bits}[staged]"
   fi
   if [ "${untracked}" == "0" ]; then
     bits="${bits}[untracked]"
