@@ -10,7 +10,12 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 #enable bash completion
 [ -f /etc/bash-completion ] && source /etc/bash-completion
 
-
+function goto_release() {
+  cd ~/lightbox_deploy/lightbox-server/web
+  source ../venv/bin/activate
+  git checkout master
+  git pull
+}
 function lastcommandfailed() {
   code=$?
   #echo $code
