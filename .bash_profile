@@ -142,7 +142,7 @@ function parse_git_dirty {
   if [ "${renamed}" == "0" ]; then
     bits="${bits}[renamed]"
   fi
-  echo "${bits}"
+  #echo "${bits}"
 }
 
 function parse_git_branch {
