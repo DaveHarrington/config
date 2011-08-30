@@ -10,12 +10,16 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 #enable bash completion
 [ -f /etc/bash-completion ] && source /etc/bash-completion
 
-function goto_release() {
+# Git completion on osx with brew
+[ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && source /usr/local/etc/bash_completion.d/git-completion.bash
+
+function gotorelease() {
   cd ~/lightbox_deploy/lightbox-server/web
   source ../venv/bin/activate
   git checkout master
   git pull
 }
+
 function lastcommandfailed() {
   code=$?
   #echo $code
@@ -58,7 +62,7 @@ alias grep='grep --colour'
 
 # Git alias
 alias gst='git status'
-alias grb='git branch -r | grep -v "origin\/v"'
+alias gls='git branch -r | grep -v "origin\/v"'
 
 export INPUTRC=~/.inputrc
 #export PROMPT_COMMAND='echo -n -e "\033k\033\0134"'
@@ -77,7 +81,7 @@ if [ `uname` == "Darwin" ]; then
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"
 
-    function mvimtab() {
+    function mtab() {
       if [ "$MVIM_SESSION" ==  "" ]
       then
         count=`mvim --serverlist | wc -l | tr -d ' '`
@@ -124,7 +128,7 @@ alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C
 function parse_git_dirty {
   status=`git status 2> /dev/null`
   dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
-  not_staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes" 2> /dev/null; echo "$?"`
+  not_staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes not staged" 2> /dev/null; echo "$?"`
   staged=`    echo -n "${status}" 2> /dev/null | grep -q "Changes to be committed" 2> /dev/null; echo "$?"`
   untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
   ahead=`    echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
