@@ -9,25 +9,36 @@ let mapleader = ','
 
 map <Leader>n :NERDTreeToggle<CR>
 
-" Create a tags file - run at the base of project
-map <f12> :!ctags -f ._tags -R .<cr>
-
 " Command-/ to toggle comments
-map <D-/> <plug>NERDCommenterToggle<CR>
-imap <D-/> <Esc><plug>NERDCommenterToggle<CR>i
+map <C-p> <plug>NERDCommenterToggle<CR>
+imap <C-p> <Esc><plug>NERDCommenterToggle<CR>i
 
 " Ctrl T for command T
 map <C-t> :CommandT<CR>
 imap <C-t> <Esc>:CommandT<CR>
 
+" Function keys
+" vimgrep
+map <F2> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+
 "Remove all trailing whitespace
 :nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
-" Opens an edit command with the path of the currently edited file filled in
+" F7/F8 add/remove a breakpoint (pdb.set_trace)
+" See later in file
+
+" ConqueTerm bindings
+map <F9> :ConqueTermTab bash <CR>
+let g:ConqueTerm_ExecFileKey = '<F11>'
+
+" Create a tags file - run at the base of project
+map <f12> :!ctags --language=Python -f ._tags -R .<cr>
+
+" Edit in this dir
 " Normal mode: <Leader>e
 map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
-" Opens a tab edit command with the path of the currently edited file filled in
+" New tab command, prefilled with this dir
 " Normal mode: <Leader>t
 map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
@@ -35,17 +46,23 @@ map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 " Command mode: Ctrl+P
 cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
-" % to bounce from do to end etc.
-runtime! macros/matchit.vim
+"Save file with sudo if you forgot with w!!
+cmap w!! w !sudo tee % >/dev/null
 
-" F7/Shift-F7 add/remove a breakpoint (pdb.set_trace)
+" Folds
+" Map ZA to zA, toggle fold on method
+map ZA zA
 
-" `gf` jumps to the filename under the cursor.  Point at an import statement
-" and jump to it!
+" don't shut on typo!
+map ZZ <null>
 
 " toggle fold = za
 " fold all   = zM
 " unfold all = zR
+
+" `gf` jumps to the filename under the cursor.  Point at an import statement
+" and jump to it!
+
 "************************"
 " More obvious:
 
@@ -64,15 +81,12 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 inoremap <C-j> <ESC>
 noremap <C-j> <ESC>
 
-nnoremap ; :
+noremap ; :
 nnoremap ' `
 nnoremap ` '
 
 "Clear highlights with ,/
 nmap <silent> ,/ :nohlsearch<CR>
-
-"Save file with sudo if you forgot with w!!
-cmap w!! w !sudo tee % >/dev/null
 
 "***********************************************"
 
@@ -82,9 +96,15 @@ let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
 " Command-T configuration
 let g:CommandTMaxHeight=20
 
+" ConqueTerm configuration
+let g:ConqueTerm_EscKey = '<C-j>'
+
 " PyFlakes highlighting
 highlight clear SpellBad
 highlight SpellBad term=underline cterm=underline gui=underline
+
+" % to bounce from do to end etc.
+runtime! macros/matchit.vim
 
 "Other boring vim stuff
 set nocompatible
@@ -95,6 +115,11 @@ set ruler
 set history=1000
 set scrolloff=3
 syntax on
+
+" Search tags in real time :P
+set complete-=i
+" Don't guess if you don't know
+set completeopt+=longest
 
 "folding settings
 set foldmethod=indent   "fold based on indent
@@ -177,15 +202,24 @@ for p in sys.path:
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
 
-"set tags=$HOME/.vim/tags/python27.ctags
-set tags=._tags
-
 " Use :make to see syntax errors. (:cn and :cp to move around, :dist to see
 " all errors)
 set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
-" Use F7/Shift-F7 to add/remove a breakpoint (pdb.set_trace)
+" Add the virtualenv's site-packages to vim path
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+" Use F7/F8 to add/remove a breakpoint (pdb.set_trace)
 " Totally cool.
 python << EOF
 def SetBreakpoint():
@@ -196,17 +230,16 @@ def SetBreakpoint():
     strWhite = re.search( '^(\s*)', strLine).group(1)
 
     vim.current.buffer.append(
-       "%(space)spdb.set_trace() %(mark)s Breakpoint %(mark)s" %
-         {'space':strWhite, 'mark': '#' * 30}, nLine - 1)
+       "%(space)spdb.set_trace() %(mark)s FIXME: Breakpoint %(mark)s" %
+         {'space':strWhite, 'mark': '#' * 5}, nLine - 1)
 
     for strLine in vim.current.buffer:
         if strLine == "import pdb":
             break
     else:
-        vim.current.buffer.append( 'import pdb', 0)
+        vim.current.buffer.append( 'import pdb', 1)
         vim.command( 'normal j1')
 
-vim.command( 'map <f7> :py SetBreakpoint()<cr>')
 
 def RemoveBreakpoints():
     import re
@@ -230,7 +263,8 @@ def RemoveBreakpoints():
 
     vim.command( "normal %dG" % nCurrentLine)
 
-vim.command( "map <s-f7> :py RemoveBreakpoints()<cr>")
+vim.command( 'map <F7> :py SetBreakpoint()<cr>')
+vim.command( "map <F8> :py RemoveBreakpoints()<cr>")
 EOF
 
 " go to defn of tag under the cursor
