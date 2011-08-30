@@ -45,6 +45,10 @@ Fix indents     gg=G
 Tog comment     ,c <space>
 Tog case        ~
 
+# Find in project
+    :vimgrep name **/*.py
+Quickfix        :copen
+close           :ccl
 Edit vimrc      ,ev
 Save vimrc      ,sv
 
