@@ -10,6 +10,9 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 #enable bash completion
 [ -f /etc/bash-completion ] && source /etc/bash-completion
 
+#VI key bindings
+set -o vi
+
 # Git completion on osx with brew
 [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && source /usr/local/etc/bash_completion.d/git-completion.bash
 
@@ -63,6 +66,13 @@ alias grep='grep --colour'
 # Git alias
 alias gst='git status'
 alias gls='git branch -r | grep -v "origin\/v"'
+alias glogbranch='git log master..HEAD'
+alias gdiffbranch='git diff master...HEAD'
+
+
+function pre-commit() {
+  grep "FIXME" * -R
+}
 
 export INPUTRC=~/.inputrc
 #export PROMPT_COMMAND='echo -n -e "\033k\033\0134"'
@@ -87,7 +97,12 @@ if [ `uname` == "Darwin" ]; then
         count=`mvim --serverlist | wc -l | tr -d ' '`
         export MVIM_SESSION="VIM"$count
       fi
-      mvim --servername $MVIM_SESSION --remote-tab-silent $1
+      if [ "$1" ==  "" ]
+      then
+        mvim --servername $MVIM_SESSION
+      else
+        mvim --servername $MVIM_SESSION --remote-tab-silent $1
+      fi
     }
 
 else

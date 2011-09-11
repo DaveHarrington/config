@@ -71,6 +71,12 @@ Push branch back to origin
   git push origin <branch>
 Ammend last commit:
   git commit --amend -C HEAD
+Diff against HEAD
+  git diff --cached
+diff all
+  b1..b2
+diff common ancestor
+  b1...b2
 
 Screen Cheatsheet:
   List:     -ls
