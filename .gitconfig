@@ -1,0 +1,17 @@
+[user]
+	name = Dave Harrington
+	email = dave@lightbox.com
+
+[color]
+    ui = auto
+[alias]
+    co = checkout
+
+[github]
+	user = dave@lightbox.com
+	token = 88ff5d47fbd77fc639d984d8cd67995f
+[core]
+	excludesfile = /Users/dave/.gitignore
+	quotepath = false
+[push]
+	default = tracking

@@ -1,5 +1,6 @@
 "Pathogen Init
 source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
+let g:pathogen_disabled = ['pydiction']
 call pathogen#infect()
 
 pyfile ~/config/vim/vim_py.py
@@ -11,31 +12,8 @@ let mapleader = ','
 
 map <Leader>n :NERDTreeToggle<CR>
 
-" Command-/ to toggle comments
-map <C-p> <plug>NERDCommenterToggle<CR>
-imap <C-p> <Esc><plug>NERDCommenterToggle<CR>i
-
-" Ctrl T for command T
-map <C-t> :CommandT<CR>
-imap <C-t> <Esc>:CommandT<CR>
-
-" Function keys
-" vimgrep
-map <F2> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-
-"Remove all trailing whitespace
-:nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-
-" F7/F8 add/remove a breakpoint (pdb.set_trace)
-map <F7> :py set_breakpoint()<cr>
-map <F8> :py remove_breakpoints()<cr>
-
-" ConqueTerm bindings
-map <F9> :ConqueTermTab bash <CR>
-let g:ConqueTerm_ExecFileKey = '<F11>'
-
-" Create a tags file - run at the base of project
-map <f12> :!ctags --language=Python -f ._tags -R .<cr>
+"Gundo
+map <leader>u :GundoToggle<CR>
 
 " Edit in this dir
 " Normal mode: <Leader>e
@@ -45,32 +23,85 @@ map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 " Normal mode: <Leader>t
 map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
+" Search and replace word under cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
+
+" CTRL Shortcuts
+" Goto def, python aware
+function! SplitGotoDefinition()
+    if !(winnr() == winnr('$'))
+       " Jump to existing split
+        exe 2 . "wincmd w"
+        q!
+    endif
+    exe 25 . "split"
+    call RopeGotoDefinition()
+    if (v:statusmsg == "Cannot find the definition!")
+        exe 2 . "wincmd w"
+        q!
+    endif
+    exe "redraw"
+    exe 1 . "wincmd w"
+endfunction
+
+map <leader>g :call SplitGotoDefinition()<CR>
+
+" Command-p to toggle comments
+" note: a custom comment method is used for python files
+map <C-p> <plug>NERDCommenterToggle<CR>
+map <C-p> <Esc><plug>NERDCommenterToggle<CR>i
+
+" Ctrl T for command T
+map <C-t> :CommandT<CR>
+imap <C-t> <Esc>:CommandT<CR>
+
+" Function keys
+" vimgrep
+"map <F2> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+
+"Remove all trailing whitespace
+:nnoremap <silent> <F3> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" F7/F8 add/remove a breakpoint (pdb.set_trace)
+map <F7> :py set_breakpoint()<cr>
+map <F8> :py remove_breakpoints()<cr>
+
+" ConqueTerm bindings
+map <F9> :ConqueTermTab bash <CR>
+let g:ConqueTerm_ExecFileKey = '<F11>'
+
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
 cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
-"Save file with sudo if you forgot with w!!
-cmap w!! w !sudo tee % >/dev/null
-
-" Folds
-" Map ZA to zA, toggle fold on method
-map ZA zA
-
-" don't shut on typo!
-map ZZ <null>
-
-" toggle fold = za
-" fold all   = zM
-" unfold all = zR
+" Fix annoying fold defaults
+" fold all
+noremap FJ zM
+" unfold all
+noremap FK zR
+" toggle fold on method
+noremap FL zA
 
 " `gf` jumps to the filename under the cursor.  Point at an import statement
 " and jump to it!
 
 "************************"
-" More obvious:
+" Fix annoyances:
+
+" Better word replace
+nnoremap <S-R> :call ReplaceInsert()<CR>
+
+"Save file with sudo if you forgot with w!!
+cmap w!! w !sudo tee % >/dev/null
 
 " Auto completion with ctrl-space
 inoremap <C-SPACE> <C-n>
+
+" Annoying when you have just hit shift v for visual mode!
+vnoremap <S-j> j
+
+" Change :W to :w
+cnoreabbrev W w
 
 " ctrl tab to change tabs
 noremap <c-tab> :tabnext<cr>
@@ -81,8 +112,8 @@ nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 "Ctrl j is escape
-inoremap <C-j> <ESC>
-noremap <C-j> <ESC>
+inoremap <C-l> <ESC>
+noremap <C-l> <ESC>
 
 noremap ; :
 nnoremap ' `
@@ -90,6 +121,12 @@ nnoremap ` '
 
 "Clear highlights with ,/
 nmap <silent> ,/ :nohlsearch<CR>
+
+" Paste last yanked
+noremap <S-p> "0p
+
+" don't shut on typo!
+map ZZ <null>
 
 "***********************************************"
 
@@ -108,6 +145,9 @@ highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=u
 " % to bounce from do to end etc.
 runtime! macros/matchit.vim
 
+" Fugitive config
+set statusline=%{fugitive#statusline()}
+
 "Other boring vim stuff
 set nocompatible
 set title
@@ -117,6 +157,18 @@ set ruler
 set history=1000
 set scrolloff=3
 syntax on
+
+set splitbelow
+set splitright
+
+" omnicomplete/supertab settings
+let g:SuperTabDefaultCompletionType="context"
+let g:SuperTabContextDefaultCompletionType="<c-x><c-k>"
+let g:SuperTabLongestHighlight = 1
+" Pydiction is bossy
+"let g:pnydiction_location = '~/config/vim/bundle/pydiction/complete-dict'
+" load pydiction's complete-dict, but use supertab
+let &dictionary = '~/.vim/bundle/pydiction/complete-dict'
 
 " Search tags in real time :P
 set complete-=i
@@ -172,7 +224,7 @@ set noswapfile
 nnoremap j gj
 nnoremap k gk
 
-"No arrow keys
+"No arrow keys, don't be lazy!
 map <up> <nop>
 map <down> <nop>
 map <left> <nop>
@@ -185,10 +237,12 @@ let python_highlight_all = 1
 " Wrap at 72 chars for comments.
 set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
 
-au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 wrap list
+au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 smarttab expandtab wrap list
+au FileType python noremap <C-p> :py toggle_comment()<CR>
+au FileType python inoremap <C-p> <ESC>:py toggle_comment()<CR>i
 
 " Smart indenting
-set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+"set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 
 let g:pydoc_cmd = "/usr/bin/pydoc"
 let g:pydoc_open_cmd = "vsplit"
@@ -198,23 +252,7 @@ let g:pydoc_open_cmd = "vsplit"
 set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
-" go to defn of tag under the cursor
-fun! MatchCaseTag()
-    let ic = &ic
-    set noic
-    try
-        exe 'tjump ' . expand('<cword>')
-    finally
-       let &ic = ic
-    endtry
-endfun
-nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
-fun! ReplaceInsert()
-    normal lbde
-    startinsert!
-endfun
-nnoremap R :call ReplaceInsert()<CR>
 
 " load the plugin and indent settings for the detected filetype
 filetype on

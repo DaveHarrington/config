@@ -64,11 +64,12 @@ alias mkdir='mkdir -p'
 alias grep='grep --colour'
 
 # Git alias
-alias gst='git status'
+alias gst='git status -sb'
 alias gls='git branch -r | grep -v "origin\/v"'
-alias glogbranch='git log master..HEAD'
+alias gtool='git difftool -y -t opendiff'
+alias glogbranch='git log --oneline --decorate master..HEAD'
 alias gdiffbranch='git diff master...HEAD'
-
+alias glost='git fsck --unreachable | grep commit | cut -d\  -f3 | xargs git log --merges --no-walk --grep=WIP'
 
 function pre-commit() {
   grep "FIXME" * -R
@@ -105,6 +106,19 @@ if [ `uname` == "Darwin" ]; then
       fi
     }
 
+    function mtabdiff() {
+      if [ "$MVIM_SESSION" ==  "" ]
+      then
+        count=`mvim --serverlist | wc -l | tr -d ' '`
+        export MVIM_SESSION="VIM"$count
+      fi
+      if [ "$1" ==  "" ]
+      then
+        mvimdiff --servername $MVIM_SESSION
+      else
+        mvimdiff --servername $MVIM_SESSION --remote-tab-silent $1
+      fi
+    }
 else
   if [ $USER != "root" ]; then
   ### START-Keychain ###
