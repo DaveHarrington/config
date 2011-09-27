@@ -17,8 +17,19 @@ fun! ReplaceInsert()
     startinsert
 endfun
 
-fun! SplitGotoDefinition()
-    call 25sp
+" Goto def, python aware
+function! SplitGotoDefinition()
+    let curr_win_num = winnr()
+    exe "wincmd j"
+    if (curr_win_num != winnr())
+      q!
+    endif
+    exe 20 . "split"
     call RopeGotoDefinition()
-endfun
-
+    if (v:statusmsg == "Cannot find the definition!")
+      z5
+    endif
+    exe "redraw"
+    z
+    exe "wincmd k"
+endfunction

@@ -46,3 +46,6 @@
 [submodule "vim/bundle/ropevim"]
 	path = vim/bundle/ropevim
 	url = https://github.com/sontek/rope-vim.git
+[submodule "vim/bundle/quickbuf"]
+	path = vim/bundle/quickbuf
+	url = https://github.com/vim-scripts/QuickBuf.git

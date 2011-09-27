@@ -12,9 +12,21 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
 #VI key bindings
 set -o vi
+bind -m vi-insert C-l:vi-movement-mode
 
 # Git completion on osx with brew
 [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && source /usr/local/etc/bash_completion.d/git-completion.bash
+
+function growl() {
+  rc=$?
+  if [[ $rc != 0 ]] ; then
+    echo -e $'\e]9;'FAILED'\007';
+    return ;
+  else
+    echo -e $'\e]9;'passed'\007';
+    return ;
+  fi
+}
 
 function gotorelease() {
   cd ~/lightbox_deploy/lightbox-server/web
@@ -71,6 +83,7 @@ alias glogbranch='git log --oneline --decorate master..HEAD'
 alias gdiffbranch='git diff master...HEAD'
 alias glost='git fsck --unreachable | grep commit | cut -d\  -f3 | xargs git log --merges --no-walk --grep=WIP'
 
+alias logcat='adb logcat | coloredlogcat.py'
 function pre-commit() {
   grep "FIXME" * -R
 }

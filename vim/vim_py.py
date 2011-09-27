@@ -54,8 +54,9 @@ def _get_indent_level(line):
     return len(line) - len(line.lstrip())
 
 def _get_current_line():
-    line_no = int(vim.eval('line(".")'))
-    line = vim.current.buffer(line_no)
+#    line_no = int(vim.eval('line(".")'))
+    line_no, _ = get_cursor_pos()
+    line = vim.current.line
 
     return line, line_no
 
@@ -77,11 +78,48 @@ def _get_current_line():
 
     #_select_range(start_line_no, end_line_no)
 
+def swap_args():
+    curr_line, curr_line_no = _get_current_line()
+    _, cursor_pos = get_cursor_pos()
+
+    for start_pos in range(cursor_pos, 0, -1):
+      if curr_line[start_pos] in ['(', ' ']:
+        start_pos += 1
+        break
+
+    end_pos = cursor_pos
+    while True:
+      try:
+        if curr_line[end_pos] in [',']:
+          break
+      except IndexError:
+        return
+      end_pos += 1
+
+    end_pos_2 = end_pos + 1
+    while True:
+      if curr_line[end_pos_2] in [',', ')']:
+        break
+      end_pos_2 += 1
+
+    before_cut = curr_line[:start_pos]
+    after_cut = curr_line[end_pos_2:]
+    cut_word_1 = curr_line[start_pos:end_pos]
+    cut_word_2 = curr_line[end_pos + 2:end_pos_2]
+    start_line = ''.join([before_cut, cut_word_2, ', '])
+    new_line = ''.join([start_line, cut_word_1, after_cut])
+    vim.current.line = new_line
+    set_cursor_pos(curr_line_no, len(start_line))
+
 def toggle_comment():
+    count = 0
     uncommented = False
     for line, _ in line_range():
         if line.lstrip()[0] != COMMENT or line.strip() == "":
             uncommented = True
+            break
+        count += 1
+        if count >= 10:
             break
 
     if uncommented:
@@ -98,8 +136,7 @@ def uncomment():
     for line, line_no in line_range():
         if len(line) and line[0] == COMMENT:
             uncommented_line = line[1:]
-            delete_line(line_no)
-            insert_line(line_no, uncommented_line)
+            replace_line(line_no, uncommented_line)
 
 def foo():
     #uncomment_range()
@@ -112,6 +149,10 @@ def delete_line(line_no):
 def insert_line(line_no, line):
     vim.command("%d normal O" % line_no)
     vim.command("%d normal i%s" % (line_no, line))
+
+def replace_line(line_no, line):
+    delete_line(line_no)
+    insert_line(line_no, line)
 
 def vim_print(*args):
     str_out = [str(arg_) for arg_ in args]
@@ -135,6 +176,12 @@ def all_buffer_range():
     for line in vim.current.buffer:
         yield line, line_no
         line_no += 1
+
+def get_cursor_pos():
+    return vim.current.window.cursor
+
+def set_cursor_pos(line_no, column_no):
+    vim.current.window.cursor = (line_no, column_no)
 
 import os.path
 import sys
