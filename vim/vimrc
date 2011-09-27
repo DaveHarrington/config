@@ -135,7 +135,6 @@ map ZZ <null>
 
 "Pathogen Init
 source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
-let g:pathogen_disabled = ['pydiction']
 call pathogen#infect()
 
 " colour column
@@ -184,13 +183,9 @@ set splitright
 "let g:SuperTabDefaultCompletionType="context"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-k>"
 "let g:SuperTabLongestHighlight = 1
-" Pydiction is bossy
-"let g:pnydiction_location = '~/config/vim/bundle/pydiction/complete-dict'
-" load pydiction's complete-dict, but use supertab
-"let &dictionary = '~/.vim/bundle/pydiction/complete-dict'
 
 " Search tags in real time :P
-    set complete-=i
+set complete-=i
 " Don't guess if you don't know
 set completeopt+=longest
 
@@ -270,8 +265,6 @@ let g:pydoc_open_cmd = "vsplit"
 " all errors)
 set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-
-
 
 " load the plugin and indent settings for the detected filetype
 filetype on

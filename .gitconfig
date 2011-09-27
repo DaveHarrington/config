@@ -13,5 +13,6 @@
 [core]
 	excludesfile = /Users/dave/.gitignore
 	quotepath = false
+	editor = mvim
 [push]
 	default = tracking

@@ -28,9 +28,6 @@
 [submodule "vim/ftplugin/python/pyflakes"]
 	path = vim/ftplugin/python/pyflakes
 	url = https://github.com/kevinw/pyflakes.git
-[submodule "vim/bundle/pydiction"]
-	path = vim/bundle/pydiction
-	url = https://github.com/vim-scripts/Pydiction.git
 [submodule "vim/bundle/supertab"]
 	path = vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
@@ -47,5 +44,5 @@
 	path = vim/bundle/ropevim
 	url = https://github.com/sontek/rope-vim.git
 [submodule "vim/bundle/quickbuf"]
-	path = vim/bundle/quickbuf
-	url = https://github.com/vim-scripts/QuickBuf.git
+       path = vim/bundle/quickbuf
+       url = https://github.com/vim-scripts/QuickBuf.git
