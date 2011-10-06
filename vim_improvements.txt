@@ -1,22 +1,18 @@
 Organise shortcuts
 
     Shortcuts for:
-        paste current 0 register in insert mode
         vimgrep current word
-        grep current word
-        0 register should be easier
-        jump to definition of word under cursor
-
-    Split window at the bottom that:
-        Shows the definition of a variable on shortcut
 
     Macros:
-        Insert/remove pdb
-        Comment based on majority, not first
+        Fix python commenter
+
         Comment at pos 0
         split long lines properly
         line up dictionaries automatically
         Clean a blank line, but keep tabbing
         Yank, comment and paste
         Select Python block
+
+    Plugins:
+        Unimpaired
 

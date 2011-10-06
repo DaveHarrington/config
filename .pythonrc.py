@@ -22,7 +22,8 @@ else:
     except:
         pass
 
-    # Set maximum number of items that will be written to the history file
+    # Set maximum number of items that will be written to the history
+    # file
     readline.set_history_length(300)
 
     def savehist():
@@ -51,7 +52,8 @@ class TermColors(dict):
         ("Purple"      , "0;35"),
         ("Cyan"        , "0;36"),
         ("LightGray"   , "0;37"),
-        ("DarkGray"    , "1;30"), ("LightRed"    , "1;31"),
+        ("DarkGray"    , "1;30"),
+        ("LightRed"    , "1;31"),
         ("LightGreen"  , "1;32"),
         ("Yellow"      , "1;33"),
         ("LightBlue"   , "1;34"),
@@ -64,6 +66,7 @@ class TermColors(dict):
     NoColor = ''
     _base  = '\001\033[%sm\002'
 
+# Colours don't work for me??
     def __init__(self):
         if os.environ.get('TERM') in ('xterm-color', 'xterm-256color', 'linux',
                                     'screen', 'screen-256color', 'screen-bce'):
@@ -72,12 +75,10 @@ class TermColors(dict):
             self.update(dict([(k, self.NoColor) for k,v in self.COLOR_TEMPLATES]))
 _c = TermColors()
 
-
-
 import sys
 # Enable Color Prompts
-sys.ps1 = '%s>>> %s' % (_c['Green'], _c['Normal'])
-sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
+#sys.ps1 = '%s>>> %s' % (_c['Green'], _c['Normal'])
+#sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
 
 # Enable Pretty Printing for stdout
 def my_displayhook(value):

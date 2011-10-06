@@ -37,3 +37,6 @@ set visualbell
 " Start without the toolbar
 set guioptions-=T
 
+" Specific to desert; dim on lose focus
+au FocusLost * hi Normal guifg=Grey guibg=grey15
+au FocusGained * hi Normal guifg=White guibg=grey10

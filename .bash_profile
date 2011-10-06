@@ -10,9 +10,12 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 #enable bash completion
 [ -f /etc/bash-completion ] && source /etc/bash-completion
 
-#VI key bindings
-set -o vi
-bind -m vi-insert C-l:vi-movement-mode
+#Django bash completion
+. /usr/local/bin/django_bash_completion
+
+##VI key bindings
+#set -o vi
+#bind -m vi-insert C-l:vi-movement-mode
 
 # Git completion on osx with brew
 [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && source /usr/local/etc/bash_completion.d/git-completion.bash

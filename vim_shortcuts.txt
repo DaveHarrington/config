@@ -5,6 +5,7 @@ Before          T t
 (next)          , ;
 
 Word            b w (e)
+Replace word    cw
 Sentence        ( )
 Paragraph       { }
 

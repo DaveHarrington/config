@@ -13,6 +13,10 @@
 [core]
 	excludesfile = /Users/dave/.gitignore
 	quotepath = false
-	editor = mvim
+	editor = mvim -f
 [push]
 	default = tracking
+[web]
+	browser = ff
+[browser "ff"]
+	cmd = open -a Firefox.app

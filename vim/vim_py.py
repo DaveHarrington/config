@@ -1,10 +1,10 @@
+import re
 import vim
+#http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python-vim
 
 COMMENT = "#"
 
 def set_breakpoint():
-    import re
-
     line_no = int( vim.eval( 'line(".")'))
     line = vim.current.line
     indent = re.search( '^(\s*)', line).group(1)
@@ -49,41 +49,12 @@ def remove_breakpoints():
         if line_no < current_line:
             current_line -= 1
 
-#vim.command( "normal %dG" % nCurrentLine)
-def _get_indent_level(line):
-    return len(line) - len(line.lstrip())
-
-def _get_current_line():
-#    line_no = int(vim.eval('line(".")'))
-    line_no, _ = get_cursor_pos()
-    line = vim.current.line
-
-    return line, line_no
-
-#def _select_range(start_line, end_line):
-    #pass
-
-#def select_block():
-    #curr_line, curr_line_no = _get_current_line()
-    #current_indent = _get_indent_level(curr_line)
-
-    #for line, end_line_no in all_buffer():
-        #if _get_indent_level(line) < current_indent:
-            #end_line_no -= 1
-            #break
-
-    #for line, start_line_no in buffer_[curr_line_no::-1]:
-        #if _get_indent_level(line) < current_indent:
-            #break
-
-    #_select_range(start_line_no, end_line_no)
-
 def swap_args():
-    curr_line, curr_line_no = _get_current_line()
-    _, cursor_pos = get_cursor_pos()
+    curr_line = vim.current.line
+    curr_line_no, cursor_pos = vim.current.window.cursor
 
     for start_pos in range(cursor_pos, 0, -1):
-      if curr_line[start_pos] in ['(', ' ']:
+      if curr_line[start_pos] in ['[', '(', ' ']:
         start_pos += 1
         break
 
@@ -98,7 +69,7 @@ def swap_args():
 
     end_pos_2 = end_pos + 1
     while True:
-      if curr_line[end_pos_2] in [',', ')']:
+      if curr_line[end_pos_2] in [',', ')', ']']:
         break
       end_pos_2 += 1
 
@@ -109,17 +80,13 @@ def swap_args():
     start_line = ''.join([before_cut, cut_word_2, ', '])
     new_line = ''.join([start_line, cut_word_1, after_cut])
     vim.current.line = new_line
-    set_cursor_pos(curr_line_no, len(start_line))
+    vim.current.window.cursor = (curr_line_no, len(start_line))
 
 def toggle_comment():
-    count = 0
     uncommented = False
-    for line, _ in line_range():
-        if line.lstrip()[0] != COMMENT or line.strip() == "":
+    for line_no, line in enumerate(vim.current.range[:10]):
+        if line.strip() != "" and line.lstrip()[0] != COMMENT:
             uncommented = True
-            break
-        count += 1
-        if count >= 10:
             break
 
     if uncommented:
@@ -128,60 +95,99 @@ def toggle_comment():
         uncomment()
 
 def comment():
-    start, end = current_range()
-    vim.command("%(start)d,%(end)d normal i%(comment)s" %
-                {"start": start, "end": end, "comment": COMMENT})
+    start, end = vim.current.range.start + 1, vim.current.range.end + 1
+    vim.command("%(start)d, %(end)s yank c" % {'start': start, 'end':end})
+    for line_no, line in enumerate(vim.current.range):
+        vim.current.range[line_no] = COMMENT + line
 
 def uncomment():
-    for line, line_no in line_range():
-        if len(line) and line[0] == COMMENT:
-            uncommented_line = line[1:]
-            replace_line(line_no, uncommented_line)
+    for line_no, line in enumerate(vim.current.range):
+        if line != "" and line[0] == COMMENT:
+            vim.current.range[line_no] = line[1:]
 
-def foo():
-    #uncomment_range()
-    insert_line(2, "foo")
+def _get_indent_level(line):
+    return len(line) - len(line.lstrip())
 
-def delete_line(line_no):
-    vim.command( "normal %dG" % line_no)
-    vim.command( "normal dd")
-
-def insert_line(line_no, line):
-    vim.command("%d normal O" % line_no)
-    vim.command("%d normal i%s" % (line_no, line))
-
-def replace_line(line_no, line):
-    delete_line(line_no)
-    insert_line(line_no, line)
+def _get_current_line():
+    line_no, _ = vim.current.window.cursor
+    return line_no, vim.current.line
 
 def vim_print(*args):
     str_out = [str(arg_) for arg_ in args]
     vim.current.buffer.append(str_out)
 
-def line_range():
-    start, _ = current_range()
-    line_no = start
-    for line in vim.current.range:
-        yield line, line_no
-        line_no += 1
+_block_re = {'class': r"\s*class\s",
+             'def': r"\s*def\s",
+            }
 
-def current_range():
-    first, sec = str(vim.current.range).split(":")
-    start = int(first.split("(")[1])
-    end = int(sec.split(")")[0])
-    return start, end
+def __start_block(block_type, find_top=True):
+    start_line = vim.current.window.cursor[0] - 1
 
-def all_buffer_range():
-    line_no = 1
-    for line in vim.current.buffer:
-        yield line, line_no
-        line_no += 1
+    # search forward for start of this indent level
+    curr_indent = _get_indent_level(vim.current.line)
+    for start_line_no in range(start_line, len(vim.current.buffer)):
+        line = vim.current.buffer[start_line_no]
+        if line.strip() != "" and _get_indent_level(line) != curr_indent:
+            start_line_no -= 1
+            break
 
-def get_cursor_pos():
-    return vim.current.window.cursor
+    # search backwards for line containing block regex
+    class_indent = -1
+    for line_no in range(start_line_no, -1, -1):
+        line = vim.current.buffer[line_no]
+        if re.match(_block_re[block_type], line):
+            class_indent = _get_indent_level(line)
+            continue
 
-def set_cursor_pos(line_no, column_no):
-    vim.current.window.cursor = (line_no, column_no)
+        elif class_indent > -1:
+            if line.strip() == "" or _get_indent_level(line) != class_indent:
+                if line_no + 1 != start_line or not find_top:
+                    break
+                else:
+                    # We were at the top
+                    class_indent = -1
+
+    return class_indent, line_no + 1
+
+def _start_block(block_type):
+    class_indent, line_no = __start_block(block_type)
+    if class_indent > -1:
+        vim.current.window.cursor = line_no + 1, class_indent
+
+def _end_block(block_type):
+    class_indent, start_line = __start_block(block_type , False)
+
+    if class_indent == -1:
+        return
+
+    at_start = True
+    for line_no in range(start_line, len(vim.current.buffer)):
+        line = vim.current.buffer[line_no]
+        if at_start and _get_indent_level(line) == class_indent:
+            continue
+        elif at_start:
+            at_start = False
+
+        if line.strip() != "" and _get_indent_level(line) <= class_indent:
+            line_no -= 1
+            break
+
+    vim.current.window.cursor = line_no + 1, _get_indent_level(line)
+
+def start_class():
+    return _start_block('class')
+
+def end_class():
+    return _end_block('class')
+
+def start_def():
+    return _start_block('def')
+
+def end_def():
+    return _end_block('def')
+
+def test_foo():
+    vim.current.window.cursor = 3, 0
 
 import os.path
 import sys
@@ -218,8 +224,9 @@ def print_dir():
     dir_str = []
     dir_str.append(dir(vim.current))
     dir_str.append(dir(vim.current.buffer))
+    dir_str.append(vim.current.buffer.range)
     dir_str.append(dir(vim.current.line))
-    dir_str.append(dir(vim.current.range))
+    dir_str.append("range: + " + dir(vim.current.range))
     dir_str.append(dir(vim.current.window))
     dir_str.append("--")
     dir_str.append(vim.current.window.cursor)

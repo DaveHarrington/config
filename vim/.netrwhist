@@ -1,3 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_cnt =3
 let g:netrw_dirhist_1='/Users/dave/lightbox/lightbox-server/.git'
+let g:netrw_dirhist_2='/Users/dave/config/vim/ftplugin/python'
+let g:netrw_dirhist_3='/Users/dave/lightbox/lightbox-server/web/api'

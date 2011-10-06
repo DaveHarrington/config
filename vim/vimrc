@@ -23,48 +23,36 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 " Swap arguments in python
 map <leader>a :py swap_args()<CR>
 
-" Quickbuff
-let g:qb_hotkey = "<C-y>"
-
 " CTRL Shortcuts
-" Goto def, python aware
-function! SplitGotoDefinition()
-    let curr_win_num = winnr()
-    exe "wincmd j"
-    if (curr_win_num != winnr())
-      q!
-    endif
-    exe 20 . "split"
-    call RopeGotoDefinition()
-    if (v:statusmsg == "Cannot find the definition!")
-      z5
-    endif
-    exe "redraw"
-    z
-    exe "wincmd k"
-endfunction
 
+"map <leader>g :call SplitGotoDefinition()<CR>,z<CR>:wincmd k<CR>
 map <leader>g :call SplitGotoDefinition()<CR>
 
-" Command-p to toggle comments
+" Paste the last cut buffer
+inoremap <C-F> <C-R>"
+
 " note: a custom comment method is used for python files
-map <C-p> <plug>NERDCommenterToggle<CR>
-map <C-p> <Esc><plug>NERDCommenterToggle<CR>i
+map <leader>ct <plug>NERDCommenterToggle<CR>
+map <leader>ct <Esc><plug>NERDCommenterToggle<CR>i
 
 " Ctrl T for command T
 map <C-t> :CommandT<CR>
 imap <C-t> <Esc>:CommandT<CR>
+map <C-y> :CommandTBuffer<CR>
+imap <C-y> <Esc>:CommandTBuffer<CR>
 
 " Function keys
 " vimgrep
-map <F2> :execute "!git grep expand("<cword>")<CR>
+map <F2> :Ggrep <C-R>=expand("<cword>")<CR><CR>
 
 "Remove all trailing whitespace
 :nnoremap <silent> <F3> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 " F7/F8 add/remove a breakpoint (pdb.set_trace)
 map <F7> :py set_breakpoint()<cr>
-map <F8> :py remove_breakpoints()<cr>
+imap <F7> <ESC>:py set_breakpoint()<CR>i
+noremap <F8> :py remove_breakpoints()<CR>
+noremap <F8> <ESC>:py remove_breakpoints()<CR>i
 
 " ConqueTerm bindings
 map <F9> :ConqueTermTab bash <CR>
@@ -85,11 +73,30 @@ noremap FL zA
 " `gf` jumps to the filename under the cursor.  Point at an import statement
 " and jump to it!
 
+"Quick fix window
+map [q :cprev<CR>
+map ]q :cnext<CR>
+
+"************************"
+" Python stuff
+" Jump to start of class
+map [c :py start_class()<CR>
+map ]c :py end_class()<CR>
+vmap [c :<C-U>py start_class()<CR>m'gv``
+vmap ]c :<C-U>py end_class()<CR>m'gv``
+
+" Jump to start of def
+map [d :py start_def()<CR>
+map ]d :py end_def()<CR>
+vmap [d :<C-U>py start_def()<CR>m'gv``
+vmap ]d :<C-U>py end_def()<CR>m'gv``
+
 "************************"
 " Fix annoyances:
 
-" Better word replace
-nnoremap <S-R> :call ReplaceInsert()<CR>
+"
+cnoremap <C-k> <UP>
+cnoremap <C-j> <DOWN>
 
 "Save file with sudo if you forgot with w!!
 cmap w!! w !sudo tee % >/dev/null
@@ -107,6 +114,10 @@ cnoreabbrev W w
 " ctrl tab to change tabs
 noremap <c-tab> :tabnext<cr>
 noremap <c-s-tab> :tabprev<cr>
+inoremap <c-tab> <ESC>:tabnext<cr>
+inoremap <c-s-tab> <ESC>:tabprev<cr>
+vnoremap <c-tab> <ESC>:tabnext<cr>
+vnoremap <c-s-tab> <ESC>:tabprev<cr>
 
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -115,10 +126,9 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 "Ctrl j is escape
 inoremap <C-l> <ESC>
 noremap <C-l> <ESC>
+cnoremap <C-l> <Esc>
 let g:ConqueTerm_EscKey = '<C-l>'
-cnoremap <unique> <C-l> <Esc>
 
-noremap ; :
 nnoremap ' `
 nnoremap ` '
 
@@ -126,15 +136,15 @@ nnoremap ` '
 nmap <silent> ,/ :nohlsearch<CR>
 
 " Paste last yanked
-noremap <S-p> "0p
+noremap <S-p> "0P
 
 " don't shut on typo!
 map ZZ <null>
 
 "***********************************************"
-
 "Pathogen Init
 source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
+let g:pathogen_disabled=['supertab']
 call pathogen#infect()
 
 " colour column
@@ -143,14 +153,21 @@ set colorcolumn:81
 " NERDTree configuration
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
 
+" Breaks Glog
+let g:pyflakes_use_quickfix = 0
+
 " Command-T configuration
 let g:CommandTMaxHeight=20
+"|:CommandTFlush|Instructs the plug-in to flush its path cache
 
 " PyFlakes highlighting
 highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=underline
 
 " % to bounce from do to end etc.
 runtime! macros/matchit.vim
+
+" Make grep load in quickfix window
+autocmd QuickFixCmdPost *grep* cwindow
 
 " Status line config
 set statusline=
@@ -252,8 +269,8 @@ let python_highlight_all = 1
 set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
 
 au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 smarttab expandtab nowrap list
-au FileType python noremap <C-p> :py toggle_comment()<CR>
-au FileType python inoremap <C-p> <ESC>:py toggle_comment()<CR>i
+map <leader>tt :py toggle_comment()<CR>
+imap <leader>tt <ESC>:py toggle_comment()<CR>i
 
 " Smart indenting
 "set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
@@ -276,10 +293,64 @@ set modelines=10
 
 " Default color scheme
 color desert
+hi Normal guifg=White guibg=grey10
 
 " MacVIM shift+arrow-keys behavior (required in .vimrc)
 let macvim_hig_shift_movement = 1
 
 " Show (partial) command in the status line
 set showcmd
+
+" Custom vim commands
+" Goto def, python aware
+function! SplitGotoDefinition()
+    let curr_win_num = winnr()
+    exe "wincmd j"
+    if (curr_win_num != winnr())
+      q!
+    endif
+    exe 40 . "split"
+    call RopeGotoDefinition()
+    exe "redraw"
+    if (v:statusmsg == "Cannot find the definition!")
+      exe "resize" . 1
+    endif
+    silent z+
+    exe "wincmd k"
+endfunction
+
+" Jump to the next or previous line that has the same level or a lower
+" level of indentation than the current line.
+"
+" exclusive (bool): true: Motion is exclusive
+"                   false: Motion is inclusive
+" fwd (bool): true: Go to next line
+"             false: Go to previous line
+" lowerlevel (bool): true: Go to line with lower indentation level
+"                    false: Go to line with the same indentation level
+" skipblanks (bool): true: Skip blank lines
+"                    false: Don't skip blank lines
+function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
+  let line = line('.')
+  let column = col('.')
+  let lastline = line('$')
+  let indent = indent(line)
+  let stepvalue = a:fwd ? 1 : -1
+  while (line > 0 && line <= lastline)
+    let line = line + stepvalue
+    if ( ! a:lowerlevel && indent(line) == indent ||
+          \ a:lowerlevel && indent(line) < indent)
+      if (! a:skipblanks || strlen(getline(line)) > 0)
+        if (a:exclusive)
+          let line = line - stepvalue
+        endif
+        exe line
+        exe "normal " column . "|"
+        return
+      endif
+    endif
+  endwhile
+endfunction
+
+nohlsearch
 
