@@ -1,3 +1,4 @@
+escape ^Oo
 activity "%c activity -> %n%f %t"
 autodetach on
 altscreen on

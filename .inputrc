@@ -1,17 +1,17 @@
 # For options see: http://tiswww.case.edu/php/chet/readline/rltop.html
 # To reload this file after changes:
 # Ctrl-X Ctrl-R
-set input-meta on
-set output-meta on
+#set input-meta on
+#set output-meta on
 
-set completion-ignore-case on
-set completion-prefix-display-length 2
-set show-all-if-ambiguous on
-set show-all-if-unmodified on
-set completion-map-case on
+#set completion-ignore-case on
+#set completion-prefix-display-length 2
+#set show-all-if-ambiguous on
+#set show-all-if-unmodified on
+#set completion-map-case on
 
-## none, visible or audible
-set bell-style none
+### none, visible or audible
+#set bell-style none
 
 ## for linux console
 #"\e[1~": beginning-of-line

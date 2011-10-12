@@ -206,32 +206,41 @@ function parse_git_dirty {
   fi
 }
 
+function parse_git_stash {
+    ref=$(git branch 2>/dev/null|grep \*|sed 's/* //') || return
+    if [ "$ref" != "" ]
+    then
+      num=$(git stash list | grep -c ${ref}) || return
+      if [ "$num" != "" ]
+      then
+        echo "[STASH]"
+      fi
+    fi
+}
+
 function parse_git_branch {
     ref=$(git branch 2>/dev/null|grep \*|sed 's/* //') || return
     if [ "$ref" != "" ]
     then
-        echo "("${ref}$(parse_git_dirty)") "
+        echo "("${ref}$(parse_git_dirty)")"
     fi
 }
 
-DEFAULT_COLOR="[33;0m"
+DEFAULT="\[\e[33;0m\]"
 GRAY_COLOR="[37;1m"
-PINK_COLOR="[35;1m"
+PINK="\[\e[35;1m\]"
 GREEN_COLOR="[32;1m"
 CYAN_COLOR="[36;1m"
-ORANGE_COLOR="[33;1m"
+ORANGE="\[\e[33;1m\]"
 RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
-GREEN="\[\033[0;32m\]"
+GREEN="\[\e[0;32m\]"
 LIGHT_PURPLE="\[\033[1;34m\]"
 WHITE="\[\033[1;20m\]"
-CYAN="\[\033[1;35m\]"
-#export PS1="$WHITE\h|$CYAN\u $YELLOW\$(parse_git_branch)$LIGHT_PURPLE/\W:\[\033[0m\] "
+CYAN="\[\e[1;35m\]"
 
-#BASEPROMPT="$WHITE`lastcommandfailed`[\A] \h|\[\e${PINK_COLOR}\]\u \[\e${ORANGE_COLOR}\] `activevirtualenv`\[\e${RED_COLOR}\][\$(parse_git_branch)]\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
-
-BASEPROMPT="[\A] \[\e${PINK_COLOR}\]\h\[\e${DEFAULT_COLOR}\]:\u \$(lastcommandfailed)\[\e${ORANGE_COLOR}\]\$(activevirtualenv)${RED}\$(parse_git_branch)\[\e${GREEN_COLOR}\]\w\[\e${DEFAULT_COLOR}\]"
-PROMPT="${BASEPROMPT}\n\[\e${CYAN_COLOR}\]$ \[\e${DEFAULT_COLOR}\]"
+BASEPROMPT="[\A] ${PINK}\h${DEFAULT}:\u \$(lastcommandfailed)${ORANGE}\$(activevirtualenv)${LIGHT_PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+PROMPT="${BASEPROMPT}\n${CYAN}\$ ${DEFAULT}"
 export PS1=$PROMPT
 
 # python
