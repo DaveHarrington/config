@@ -40,13 +40,17 @@ map <C-t> :CommandT<CR>
 imap <C-t> <Esc>:CommandT<CR>
 map <C-y> :CommandTBuffer<CR>
 imap <C-y> <Esc>:CommandTBuffer<CR>
+let g:CommandTCancelMap=['<ESC>', '<C-l>']
+let g:CommandTBackspaceMap=['<C-h>', '<BS>']
 
-" Function keys
 " vimgrep
 map <F2> :Ggrep <C-R>=expand("<cword>")<CR><CR>
 
 "Remove all trailing whitespace
-:nnoremap <silent> <F3> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+nnoremap <silent> <F3> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+"Remove all trailing whitespace
+map <F4> :syntax sync fromstart<CR>
 
 " F7/F8 add/remove a breakpoint (pdb.set_trace)
 map <F7> :py set_breakpoint()<cr>
@@ -168,6 +172,9 @@ runtime! macros/matchit.vim
 
 " Make grep load in quickfix window
 autocmd QuickFixCmdPost *grep* cwindow
+
+" Autoread files when changed externally
+set autoread
 
 " Status line config
 set statusline=
