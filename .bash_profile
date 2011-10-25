@@ -210,7 +210,7 @@ function parse_git_stash {
     ref=$(git branch 2>/dev/null|grep \*|sed 's/* //') || return
     if [ "$ref" != "" ]
     then
-      num=$(git stash list | grep -c ${ref}) || return
+      num=$(git stash list | grep -c ${ref}:) || return
       if [ "$num" != "" ]
       then
         echo "[STASH]"
