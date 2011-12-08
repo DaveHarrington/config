@@ -77,6 +77,7 @@ alias ps='ps'
 #alias ping='ping -c 5'
 alias mkdir='mkdir -p'
 alias grep='grep --colour'
+alias mtab='mvim --remote-tab-silent'
 
 # Git alias
 alias gst='git status -sb'
@@ -108,33 +109,6 @@ if [ `uname` == "Darwin" ]; then
     export ARCHFLAGS="-arch i386 -arch x86_64"
     export PATH="$PATH:/usr/local/mysql/bin/"
 
-    function mtab() {
-      if [ "$MVIM_SESSION" ==  "" ]
-      then
-        count=`mvim --serverlist | wc -l | tr -d ' '`
-        export MVIM_SESSION="VIM"$count
-      fi
-      if [ "$1" ==  "" ]
-      then
-        mvim --servername $MVIM_SESSION
-      else
-        mvim --servername $MVIM_SESSION --remote-tab-silent $1
-      fi
-    }
-
-    function mtabdiff() {
-      if [ "$MVIM_SESSION" ==  "" ]
-      then
-        count=`mvim --serverlist | wc -l | tr -d ' '`
-        export MVIM_SESSION="VIM"$count
-      fi
-      if [ "$1" ==  "" ]
-      then
-        mvimdiff --servername $MVIM_SESSION
-      else
-        mvimdiff --servername $MVIM_SESSION --remote-tab-silent $1
-      fi
-    }
 else
   if [ $USER != "root" ]; then
   ### START-Keychain ###

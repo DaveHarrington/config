@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/Users/dave/lightbox/lightbox-server/.git'
 let g:netrw_dirhist_2='/Users/dave/config/vim/ftplugin/python'
 let g:netrw_dirhist_3='/Users/dave/lightbox/lightbox-server/web/api'
@@ -7,3 +7,5 @@ let g:netrw_dirhist_4='/Users/dave/lightbox/lightbox-server/web'
 let g:netrw_dirhist_5='/Users/dave/tmp'
 let g:netrw_dirhist_6='/Users/dave/lightbox/lightbox-server/web/lightbox/core'
 let g:netrw_dirhist_7='/Users/dave/lightbox/lightbox-server/web/actstream'
+let g:netrw_dirhist_8='/Users/dave/lightbox/lightbox-server/web/lightbox/core'
+let g:netrw_dirhist_9='/Users/dave/lightbox/lightbox-server/web/lightbox/management/commands'

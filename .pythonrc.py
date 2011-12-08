@@ -76,9 +76,9 @@ class TermColors(dict):
 _c = TermColors()
 
 import sys
-# Enable Color Prompts
-sys.ps1 = '%s>>> %s' % (_c['Green'], _c['Normal'])
-sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
+## Enable Color Prompts
+#sys.ps1 = '%s>>> %s' % (_c['Green'], _c['Normal'])
+#sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
 
 # Enable Pretty Printing for stdout
 def my_displayhook(value):
@@ -110,9 +110,16 @@ if 'DJANGO_SETTINGS_MODULE' in os.environ:
     A = DjangoModels()
     C = Client()
 
+    try:
+        for name in ["thai", "tjp", "daveh", "ben"]:
+            locals()[name] = A.Profile.objects.get(user__username=name)
+    except:
+        pass
+
     WELCOME += """%(Green)s
     Django environment detected.
 * Your INSTALLED_APPS models are available as `A`.
 * Your project settings are available as `S`.
 * The Django test client is available as `C`.
 %(Normal)s""" % _c
+
