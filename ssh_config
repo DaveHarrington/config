@@ -16,6 +16,34 @@ User dave
 ServerAliveInterval 30
 ServerAliveCountMax 120
 
+Host web3
+
+HostName web3.lightbox.com
+User dave
+ServerAliveInterval 30
+ServerAliveCountMax 120
+
+Host web4
+
+HostName web4.lightbox.com
+User dave
+ServerAliveInterval 30
+ServerAliveCountMax 120
+
+Host web5
+
+HostName web5.lightbox.com
+User dave
+ServerAliveInterval 30
+ServerAliveCountMax 120
+
+Host web6
+
+HostName web6.lightbox.com
+User dave
+ServerAliveInterval 30
+ServerAliveCountMax 120
+
 Host dbm
 
 HostName db-master.lightbox.com

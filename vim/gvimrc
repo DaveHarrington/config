@@ -26,8 +26,10 @@ if has("gui_macvim")
 
 endif
 
-set guifont=Ubuntu\ Mono:h16
-color desert
+set guifont=Ubuntu\ Mono:h16  
+"color desert
+
+colorscheme dave
 
 macmenu &File.New\ Tab key=<D-t>
 
@@ -38,5 +40,5 @@ set visualbell
 set guioptions-=T
 
 " Specific to desert; dim on lose focus
-au FocusLost * hi Normal guifg=Grey guibg=grey15
-au FocusGained * hi Normal guifg=White guibg=grey10
+"au FocusLost * hi Normal guifg=Grey guibg=#002b36
+"au FocusGained * hi Normal guifg=White guibg=#000000

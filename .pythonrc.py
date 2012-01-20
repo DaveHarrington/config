@@ -97,24 +97,17 @@ sys.displayhook = my_displayhook
 
 if 'DJANGO_SETTINGS_MODULE' in os.environ:
     from django.db.models.loading import get_models
-    from django.test.client import Client
-    from django.test.utils import setup_test_environment, teardown_test_environment
-    from django.conf import settings as S
+    Profile = None
 
-    class DjangoModels(object):
-        """Loop through all the models in INSTALLED_APPS and import them."""
-        def __init__(self):
-            for m in get_models():
-                setattr(self, m.__name__, m)
-
-    A = DjangoModels()
-    C = Client()
+    for m in get_models():
+        locals()[m.__name__] = m
 
     try:
-        for name in ["thai", "tjp", "daveh", "ben"]:
-            locals()[name] = A.Profile.objects.get(user__username=name)
+        for name in ["thai", "tjp", "dave", "ben"]:
+            locals()[name] = Profile.objects.get(user__username=name)
     except:
         pass
+    print 'imported django models'
 
     WELCOME += """%(Green)s
     Django environment detected.

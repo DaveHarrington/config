@@ -70,6 +70,8 @@ alias l='ls $LS_OPTIONS -Ff --color'
 alias ld='ls -d $LS_OPTIONS -af --color'  # directories only!
 alias pgrep='pgrep -lf'
 
+alias v='screen -D -R VIM /usr/local/bin/mvim -v'
+
 #  -h makes the numbers human
 alias df='df -h'
 alias du='du -h -c'
@@ -234,4 +236,5 @@ if [ `id -u` != '0' ]; then
   fi
 fi
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.
 fortune
