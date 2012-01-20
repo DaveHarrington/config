@@ -81,6 +81,9 @@ noremap FL zA
 map [q :cprev<CR>
 map ]q :cnext<CR>
 
+" Match tmux
+map <C-w>- :sp<CR>
+map <C-w>\| :vsp<CR>
 "************************"
 " Python stuff
 " Jump to start of class
