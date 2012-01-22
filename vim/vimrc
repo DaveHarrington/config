@@ -74,6 +74,8 @@ noremap FJ zR
 " toggle fold on method
 noremap FL zA
 
+" Shortcut to delete all buffers
+ca BD bufdo bdelete
 " `gf` jumps to the filename under the cursor.  Point at an import statement
 " and jump to it!
 
@@ -98,6 +100,8 @@ map ]d :py end_def()<CR>
 vmap [d :<C-U>py start_def()<CR>m'gv``
 vmap ]d :<C-U>py end_def()<CR>m'gv``
 
+" Ctrl-c, party like it's 1995
+vmap <C-c> "*y
 "************************"
 " Fix annoyances:
 
@@ -276,6 +280,7 @@ set laststatus=2
 " enable using the mouse if terminal emulator
 " supports it (xterm does)
 set mouse=a
+set ttymouse=xterm2
 
 " Eh, swapfiles
 set nobackup
