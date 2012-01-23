@@ -87,9 +87,9 @@ hi Statement	ctermfg=111		cterm=none		guifg=#88b8f6	gui=none
 hi Constant		ctermfg=167		cterm=none		guifg=#e5786d	gui=none
 hi Number		ctermfg=167		cterm=none		guifg=#e5786d	gui=none
 hi PreProc		ctermfg=167		cterm=none		guifg=#e5786d	gui=none
-hi Function		ctermfg=190		cterm=none		guifg=#cae982	gui=none
-hi Identifier	ctermfg=190		cterm=none		guifg=#cae982	gui=none
-hi Type			ctermfg=184		cterm=none		guifg=#d4d987	gui=none
+hi Function		ctermfg=227		cterm=none		guifg=#cae982	gui=none
+hi Identifier	ctermfg=227		cterm=none		guifg=#cae982	gui=none
+hi Type			ctermfg=185		cterm=none		guifg=#d4d987	gui=none
 hi Special		ctermfg=229		cterm=none		guifg=#eadead	gui=none
 hi String		ctermfg=113  	cterm=none		guifg=#95e454	gui=italic
 hi Comment		ctermfg=246		cterm=none		guifg=#9c998e	gui=italic
