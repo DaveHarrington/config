@@ -7,6 +7,9 @@ export PYTHONSTARTUP
 # sets the title of the xterm (or the current tab)
 export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
+# Require Ctrl-D twice to exit
+export IGNOREEOF=1
+
 #enable bash completion
 [ -f /etc/bash-completion ] && source /etc/bash-completion
 
@@ -14,7 +17,7 @@ export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 . /usr/local/bin/django_bash_completion
 
 ##VI key bindings
-#set -o vi
+set -o vi
 #bind -m vi-insert C-l:vi-movement-mode
 
 # Git completion on osx with brew
@@ -186,10 +189,10 @@ function parse_git_stash {
     ref=$(git branch 2>/dev/null|grep \*|sed 's/* //') || return
     if [ "$ref" != "" ]
     then
-      num=$(git stash list | grep -c ${ref}:) || return
-      if [ "$num" != "" ]
+      vals=$(git stash list | grep -n ${ref}: | perl -n -e'/stash@({.*}):/ && print "$1"') || return
+      if [ -n "$vals" ]
       then
-        echo "[STASH]"
+        echo "[STASH $vals]"
       fi
     fi
 }

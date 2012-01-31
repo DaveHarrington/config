@@ -23,17 +23,12 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 " Swap arguments in python
 map <leader>a :py swap_args()<CR>
 
-" CTRL Shortcuts
-
 "map <leader>g :call SplitGotoDefinition()<CR>,z<CR>:wincmd k<CR>
 map <leader>g :call SplitGotoDefinition()<CR>
 
-" Paste the last cut buffer
-inoremap <C-F> <C-R>"
-
 " note: a custom comment method is used for python files
-map <leader>ct <plug>NERDCommenterToggle<CR>
-map <leader>ct <Esc><plug>NERDCommenterToggle<CR>i
+map <leader>tt <plug>NERDCommenterToggle<CR>
+imap <leader>tt <Esc><plug>NERDCommenterToggle<CR>i
 
 " Ctrl T for command T
 map <C-t> :CommandT<CR>
@@ -42,6 +37,7 @@ map <C-y> :CommandTBuffer<CR>
 imap <C-y> <Esc>:CommandTBuffer<CR>
 let g:CommandTCancelMap=['<ESC>', '<C-[>']
 let g:CommandTBackspaceMap=['<C-h>', '<BS>']
+ca cf CommandTFlush
 
 " vimgrep
 map <F2> :Ggrep <C-R>=expand("<cword>")<CR><CR>
@@ -76,6 +72,7 @@ noremap FL zA
 
 " Shortcut to delete all buffers
 ca BD bufdo bdelete
+
 " `gf` jumps to the filename under the cursor.  Point at an import statement
 " and jump to it!
 
@@ -113,52 +110,23 @@ cnoremap <C-j> <DOWN>
 cmap w!! w !sudo tee % >/dev/null
 
 " Auto completion with ctrl-space
-inoremap <C-SPACE> <C-n>
-inoremap <C-Nul> <C-n>
+"inoremap <C-SPACE> <C-n>
+"inoremap <C-Nul> <C-n>
 
 " Annoying when you have just hit shift v for visual mode!
 vnoremap <S-j> j
 vnoremap <S-k> k
 
-" Change :W to :w
-cnoreabbrev W w
-
   " ctrl tab to change tabs
-  "noremap <c-tab> :tabnext<cr>
-"noremap <c-s-tab> :tabprev<cr>
-"inoremap <c-tab> <ESC>:tabnext<cr>
-"inoremap <c-s-tab> <ESC>:tabprev<cr>
-"vnoremap <c-tab> <ESC>:tabnext<cr>
-"vnoremap <c-s-tab> <ESC>:tabprev<cr>
-"" And in iterm2
-"noremap <c-o>n :tabnext<cr>
-"noremap <c-o>p :tabprev<cr>
-"noremap <c-o>t :tabnew<cr>
-"noremap <c-o>w :q<cr>
-"inoremap <c-o>n <ESC>:tabnext<cr>
-"inoremap <c-o>p <ESC>:tabprev<cr>
-"inoremap <c-o>t <ESC>:tabnew<cr>
-"inoremap <c-o>w <ESC>:q<cr>
-"vnoremap <c-o>n <ESC>:tabnext<cr>
-"vnoremap <c-o>p <ESC>:tabprev<cr>
-"vnoremap <c-o>t <ESC>:tabnew<cr>
-"vnoremap <c-o>w <ESC>:q<cr>
 noremap <c-h> :tabprev<cr>
 noremap <c-l> :tabnext<cr>
 noremap <c-w>t :tabnew<cr>
 inoremap <c-w>t <ESC>:tabnew<cr>
 vnoremap <c-w>t <ESC>:tabnew<cr>
 
-
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
-
-"Ctrl j is escape
-"inoremap <C-l> <ESC>
-"noremap <C-l> <ESC>
-"cnoremap <C-l> <Esc>
-"let g:ConqueTerm_EscKey = '<C-l>'
 
 nnoremap ' `
 nnoremap ` '
@@ -166,11 +134,11 @@ nnoremap ` '
 "Clear highlights with ,/
 nmap <silent> ,/ :nohlsearch<CR>
 
-" Paste last yanked
-noremap <S-p> "0P
-
-" Not sure why I have to map this
-map <C-W>q :q<cr>
+" Default to paste last yanked
+noremap <leader>p p
+noremap <leader>P P
+noremap p "0p
+noremap P "0P
 
 "***********************************************"
 "Pathogen Init
@@ -180,8 +148,10 @@ if exists("*pathogen#infect")
   call pathogen#infect()
 endif
 
-" colour column
-set colorcolumn:81
+if version >= 700
+  " colour column
+  set colorcolumn:81
+endif
 
 " NERDTree configuration
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
@@ -308,8 +278,8 @@ let python_highlight_all = 1
 set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
 
 au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 smarttab expandtab nowrap list
-map <leader>tt :py toggle_comment()<CR>
-imap <leader>tt <ESC>:py toggle_comment()<CR>i
+au FileType python map <buffer> <leader>tt :py toggle_comment()<CR>
+au FileType python imap <buffer> <leader>tt <ESC>:py toggle_comment()<CR>i
 
 au FileType htmldjango set wrap nolist breakat==}>
 
