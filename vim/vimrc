@@ -134,11 +134,7 @@ nnoremap ` '
 "Clear highlights with ,/
 nmap <silent> ,/ :nohlsearch<CR>
 
-" Default to paste last yanked
-noremap <leader>p p
-noremap <leader>P P
-noremap p "0p
-noremap P "0P
+noremap <C-S-p> "0p
 
 "***********************************************"
 "Pathogen Init
@@ -366,3 +362,9 @@ endfunction
 
 nohlsearch
 set t_Co=256
+
+if !has('gui_running')
+  autocmd InsertEnter * set cul
+  autocmd InsertLeave * set nocul
+endif
+
