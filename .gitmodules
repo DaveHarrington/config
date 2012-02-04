@@ -43,3 +43,6 @@
 [submodule "vim/bundle/ropevim"]
 	path = vim/bundle/ropevim
 	url = https://github.com/sontek/rope-vim.git
+[submodule "omzsh"]
+	path = omzsh
+	url = git://github.com/robbyrussell/oh-my-zsh.git
