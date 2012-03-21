@@ -4,14 +4,14 @@
 #set input-meta on
 #set output-meta on
 
-#set completion-ignore-case on
-#set completion-prefix-display-length 2
-#set show-all-if-ambiguous on
-#set show-all-if-unmodified on
-#set completion-map-case on
+set completion-ignore-case on
+set completion-prefix-display-length 2
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set completion-map-case on
 
 ### none, visible or audible
-#set bell-style none
+set bell-style none
 
 ## for linux console
 #"\e[1~": beginning-of-line

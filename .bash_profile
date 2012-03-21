@@ -16,8 +16,6 @@ export IGNOREEOF=1
 #Django bash completion
 . /usr/local/bin/django_bash_completion
 
-##VI key bindings
-set -o vi
 #bind -m vi-insert C-l:vi-movement-mode
 
 # Git completion on osx with brew
@@ -89,6 +87,8 @@ alias gst='git status -sb'
 alias gls='git branch -r | grep -v "origin\/v"'
 alias gtool='git difftool -y -t opendiff'
 alias glogbranch='git log --oneline --decorate master..HEAD'
+alias gl='git log --graph --pretty="format:%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset"'
+alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative" 
 alias gdiffbranch='git diff master...HEAD'
 alias glost='git fsck --unreachable | grep commit | cut -d\  -f3 | xargs git log --merges --no-walk --grep=WIP'
 
@@ -138,8 +138,6 @@ function pyfind() {
   fi
   grep -q "__init__.py$" <<< $x && echo `dirname $x` || echo $x
 }
-
-alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative" 
 
 # Set screen title to the currently running command. Include arguments if the command is "ssh" so we know what 
 # host each tab is connected to. Adapted from http://reluctanthacker.rollett.org/node/29/, which in turn is

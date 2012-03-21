@@ -3,7 +3,8 @@ pyfile ~/config/vim/vim_py.py
 " All custom keybindings
 "***********************************************"
 let mapleader = ','
-
+"imap <c-[> <ESC>a
+"map <c-c> <ESC>
 map <Leader>n :NERDTreeToggle<CR>
 
 "Gundo
@@ -29,15 +30,21 @@ map <leader>g :call SplitGotoDefinition()<CR>
 " note: a custom comment method is used for python files
 map <leader>tt <plug>NERDCommenterToggle<CR>
 imap <leader>tt <Esc><plug>NERDCommenterToggle<CR>i
-
+let g:NERDCustomDelimiters = {
+    \ 'htmldjango': { 'left': '{% comment %}','right': '{% endcomment %}' },
+    \ }
 " Ctrl T for command T
 map <C-t> :CommandT<CR>
 imap <C-t> <Esc>:CommandT<CR>
 map <C-y> :CommandTBuffer<CR>
 imap <C-y> <Esc>:CommandTBuffer<CR>
 let g:CommandTCancelMap=['<ESC>', '<C-[>']
+let g:CommandTCursorLeftMap=['<Left>']
+let g:CommandTCursorRightMap=['<Right>']
 let g:CommandTBackspaceMap=['<C-h>', '<BS>']
 ca cf CommandTFlush
+
+set switchbuf=usetab,newtab
 
 " vimgrep
 map <F2> :Ggrep <C-R>=expand("<cword>")<CR><CR>
@@ -81,8 +88,9 @@ map [q :cprev<CR>
 map ]q :cnext<CR>
 
 " Match tmux
-map <C-w>- :sp<CR>
+map <C-w>_ :sp<CR>
 map <C-w>\| :vsp<CR>
+map <C-w>t :tabnew<CR>
 "************************"
 " Python stuff
 " Jump to start of class
@@ -118,11 +126,9 @@ vnoremap <S-j> j
 vnoremap <S-k> k
 
   " ctrl tab to change tabs
-noremap <c-h> :tabprev<cr>
-noremap <c-l> :tabnext<cr>
-noremap <c-w>t :tabnew<cr>
-inoremap <c-w>t <ESC>:tabnew<cr>
-vnoremap <c-w>t <ESC>:tabnew<cr>
+noremap <c-w><c-i> :tabprev<cr>
+noremap <c-w><c-o> :tabnext<cr>
+noremap <c-w><c-t> :tabnew<cr>
 
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -224,9 +230,9 @@ set encoding=utf-8
 
 " Whitespace stuff
 set nowrap
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 set list listchars=tab:\ \ ,trail:·
 
@@ -261,10 +267,10 @@ nnoremap j gj
 nnoremap k gk
 
 "No arrow keys, don't be lazy!
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
+"map <up> <nop>
+"map <down> <nop>
+"map <left> <nop>
+"map <right> <nop>
 
 " Python specific
 " More syntax highlighting.
