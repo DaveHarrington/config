@@ -21,10 +21,10 @@ let colors_name = "dave256"
 
 " General colors
 hi Normal		ctermfg=252		ctermbg=233		cterm=none		guifg=#e3e0d7	guibg=#242424	gui=none
-hi SpecialKey	ctermfg=241		ctermbg=233		cterm=none		guifg=#626262	guibg=#2b2b2b	gui=none
+hi SpecialKey	ctermfg=241		ctermbg=233		cterm=none		guifg=#626262	guibg=#242424	gui=none
 hi LineNr		ctermfg=241		ctermbg=232		cterm=none		guifg=#857b6f	guibg=#080808	gui=none
 
-hi StatusLine	ctermfg=230		ctermbg=237		cterm=none		guifg=#ffffd7	guibg=#444444	gui=italic
+hi StatusLine	ctermfg=230		ctermbg=237		cterm=none		guifg=#ffffd7	guibg=#444444	gui=none
 
 if version >= 700
 hi ColorColumn					ctermbg=234										guibg=#2d2d2d
@@ -39,7 +39,9 @@ hi Folded		ctermfg=103		ctermbg=233		cterm=none		guifg=#a0a8b0	guibg=#3a4046	gui
 hi StatusLineNC	ctermfg=247		ctermbg=238		cterm=none		guifg=#857b6f	guibg=#444444	gui=none
 hi VertSplit	ctermfg=238		ctermbg=238		cterm=none		guifg=#444444	guibg=#444444	gui=none
 hi WarningMsg	ctermfg=203										guifg=#ff5f55
-hi ErrorMsg		ctermfg=196		ctermbg=236		cterm=bold		guifg=#ff2026	guibg=#3a3a3a	gui=bold
+
+hi ErrorMsg		ctermfg=196		ctermbg=236		cterm=bold		guifg=NONE guibg=NONE
+hi Error		ctermfg=196		ctermbg=236		cterm=bold		guifg=NONE guibg=NONE
 
 if version >= 700
 hi MatchParen	ctermfg=228		ctermbg=101		cterm=bold		guifg=#eae788	guibg=#857b6f	gui=bold
@@ -58,7 +60,7 @@ hi DiffChange					ctermbg=237										guibg=#382a37
 hi SpellBad term=reverse ctermbg=52 gui=undercurl guisp=Red
 
 "hi CursorIM
-"hi Directory
+hi Directory guifg=#afffff
 "hi IncSearch
 "hi Menu
 "hi ModeMsg
@@ -91,9 +93,9 @@ hi Function		ctermfg=227		cterm=none		guifg=#cae982	gui=none
 hi Identifier	ctermfg=227		cterm=none		guifg=#cae982	gui=none
 hi Type			ctermfg=185		cterm=none		guifg=#d4d987	gui=none
 hi Special		ctermfg=229		cterm=none		guifg=#eadead	gui=none
-hi String		ctermfg=113  	cterm=none		guifg=#95e454	gui=italic
+hi String		ctermfg=113  	cterm=none		guifg=#87d75f	gui=italic
 hi Comment		ctermfg=246		cterm=none		guifg=#9c998e	gui=italic
-hi Todo			ctermfg=9		ctermbg=234	cterm=none		guifg=#857b6f	gui=italic
+hi Todo			ctermfg=9		ctermbg=234		cterm=none		guifg=#bf3636 guibg=#1c1c1c	gui=italic
 
 
 " Links

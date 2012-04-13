@@ -1,0 +1,10 @@
+# General Ack Settings
+####################################################################
+
+# only search with case sensitivity if there is mixed case
+--smart-case
+# follow symlinks
+--follow
+
+--pager=less -R
+--ignore-dir=CACHE

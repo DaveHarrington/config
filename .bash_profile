@@ -18,6 +18,9 @@ export IGNOREEOF=1
 
 #bind -m vi-insert C-l:vi-movement-mode
 
+# Append bash history
+shopt -s histappend
+
 # Git completion on osx with brew
 [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && source /usr/local/etc/bash_completion.d/git-completion.bash
 
