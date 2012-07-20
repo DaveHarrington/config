@@ -1,6 +1,10 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
+    export TERM="xterm-256color"
+fi
+
 PYTHONSTARTUP=~/.pythonrc.py
 export PYTHONSTARTUP
 
@@ -121,7 +125,7 @@ else
   if [ $USER != "root" ]; then
   ### START-Keychain ###
   # Let  re-use ssh-agent and/or gpg-agent between logins
-  /usr/bin/keychain $HOME/.ssh/id_rsa
+  /usr/bin/keychain -q $HOME/.ssh/id_rsa
   source $HOME/.keychain/$HOSTNAME-sh
   ### End-Keychain ###
     # Non-mac specific code
@@ -187,14 +191,16 @@ function parse_git_dirty {
 }
 
 function parse_git_stash {
-    ref=$(git branch 2>/dev/null|grep \*|sed 's/* //') || return
-    if [ "$ref" != "" ]
+    branches=$(git branch 2>/dev/null) || return
+    ref=$(echo "${branches}" | grep \* | sed 's/* //')
+    if [ "${ref}" == "" ]
     then
-      vals=$(git stash list | grep -n ${ref}: | perl -n -e'/stash@({.*}):/ && print "$1"') || return
-      if [ -n "$vals" ]
-      then
-        echo "[STASH $vals]"
-      fi
+        ref="(no branch)"
+    fi
+    vals=$(git stash list | grep -n "${ref}:" | perl -n -e'/stash@({.*}):/ && print "$1"') || return
+    if [ -n "$vals" ]
+    then
+      echo "[STASH $vals]"
     fi
 }
 
