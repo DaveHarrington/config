@@ -5,7 +5,9 @@ import sys
 
 force = True if '-f' in sys.argv else False
 
-ignores = ['.git', 'README', 'install.py', 'vim_shortcuts.txt']
+ignores = ['.git', 'README', 'install.py', 'vim_shortcuts.txt',
+	'ssh_config', 'vim_improvements.txt', 'git_hooks',
+	'com.googlecode.iterm2.plist']
 dir_list = os.listdir(".")
 for file in dir_list:
 
