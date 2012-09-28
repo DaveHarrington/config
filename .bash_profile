@@ -5,6 +5,8 @@ if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM="xterm-256color"
 fi
 
+[ -f ~/.bashrc.android ] && source ~/.bashrc.android
+
 PYTHONSTARTUP=~/.pythonrc.py
 export PYTHONSTARTUP
 
@@ -18,7 +20,7 @@ export IGNOREEOF=1
 [ -f /etc/bash-completion ] && source /etc/bash-completion
 
 #Django bash completion
-. /usr/local/bin/django_bash_completion
+[ -f /usr/local/bin/django_bash_completion ] && source /usr/local/bin/django_bash_completion
 
 #bind -m vi-insert C-l:vi-movement-mode
 
