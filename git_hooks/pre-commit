@@ -2,14 +2,14 @@
 # Pre Commit Script
 
 # Ensure all FIXME and pdb are removed!
-bad_word_regex="(fixme|FIXME|pdb)"
+bad_word_regex="(fixme|FIXME|pdb|hphpd_break|die)"
 bad_word_count=$(git diff --cached | grep -e "^+" | grep -cE "$bad_word_regex")
 
 if [ "$bad_word_count" != "0" ]; then
   echo '***************************'
-  echo FIXME or PDB found in commit!
+  echo FIXME or HPHPD_BREAK or PDB found in commit!
   echo 
-  echo File diff follows
+  echo File diff:
   echo '***************************'
   git diff --cached -G $bad_word_regex
   exit 1;

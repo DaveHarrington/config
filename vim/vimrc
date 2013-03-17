@@ -1,192 +1,134 @@
-pyfile ~/config/vim/vim_py.py
 "***********************************************"
 " All custom keybindings
+"
 "***********************************************"
-let mapleader = ','
-"imap <c-[> <ESC>a
-"map <c-c> <ESC>
-map <Leader>n :NERDTreeToggle<CR>
 
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+"Pathogen Init
+source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
+if exists("*pathogen#infect")
+  "let g:pathogen_disabled=[]
+  call pathogen#infect()
+endif
+
+let mapleader = ','
+
+"Surround
+" cs"'
+" ds"
+" yss" #line
+" ysiw" #word
+
+"sudo
+":e sudo:/etc/passwd
+
+" Quicklist
+nnoremap ]q :cnext<cr>
+nnoremap [q :cprevious<cr>
+
+"comment
+" n:gcc
+" v:gc
+let g:tcommentMapLeader1 = ''
+let g:tcommentMapLeader2 = ''
+let g:tcommentMapLeaderOp2 = ''
+
+let g:EasyMotion_do_mapping = 0
+vnoremap gw :<C-U>call EasyMotion#WB(1, 0)<CR>
+inoremap gw :call EasyMotion#WB(0, 0)<CR>
+onoremap gw :call EasyMotion#WB(0, 0)<CR>
+nnoremap gw :call EasyMotion#WB(0, 0)<CR>
+vnoremap gW :<C-U>call EasyMotion#WB(1, 1)<CR>
+inoremap gW :call EasyMotion#WB(0, 1)<CR>
+onoremap gW :call EasyMotion#WB(0, 1)<CR>
+nnoremap gW :call EasyMotion#WB(0, 1)<CR>
+
+"tslime
+vmap <C-c><C-c> "ry :call Send_to_Tmux(@r)<CR>
+
+"neocomplcache
+imap <C-k> <Plug>(neocomplcache_snippets_expand)
+smap <C-k> <Plug>(neocomplcache_snippets_expand)
+inoremap <expr><C-g> neocomplcache#undo_completion()
+inoremap <expr><C-l> neocomplcache#complete_common_string()
+inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
+
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 "Gundo
 map <leader>u :GundoToggle<CR>
 
-" Edit in this dir
-" Normal mode: <Leader>e
-map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+" Smart grep
+map <Leader>g :TBGS
+map <Leader>w :TBGW<CR>
 
-" New tab command, prefilled with this dir
-" Normal mode: <Leader>t
-map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
-
-" Search and replace word under cursor
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
-
-" Swap arguments in python
-map <leader>a :py swap_args()<CR>
-
-"map <leader>g :call SplitGotoDefinition()<CR>,z<CR>:wincmd k<CR>
-map <leader>g :call SplitGotoDefinition()<CR>
-
-" note: a custom comment method is used for python files
-map <leader>tt <plug>NERDCommenterToggle<CR>
-imap <leader>tt <Esc><plug>NERDCommenterToggle<CR>i
-let g:NERDCustomDelimiters = {
-    \ 'htmldjango': { 'left': '{% comment %}','right': '{% endcomment %}' },
-    \ }
-" Ctrl T for command T
-map <C-t> :CommandT<CR>
-imap <C-t> <Esc>:CommandT<CR>
-map <C-y> :CommandTBuffer<CR>
-imap <C-y> <Esc>:CommandTBuffer<CR>
-let g:CommandTCancelMap=['<ESC>', '<C-[>']
-let g:CommandTCursorLeftMap=['<Left>']
-let g:CommandTCursorRightMap=['<Right>']
-let g:CommandTBackspaceMap=['<C-h>', '<BS>']
-ca cf CommandTFlush
-
-set switchbuf=usetab,newtab
-
-" vimgrep
-map <F2> :Ggrep <C-R>=expand("<cword>")<CR><CR>
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_use_caching = 1
+let g:ctrlp_switch_buffer = ''
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_extensions = ['tag']
+map <C-y> :CtrlPMRU<CR>
 
 "Remove all trailing whitespace
 nnoremap <silent> <F3> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-
-"Remove all trailing whitespace
 map <F4> :syntax sync fromstart<CR>
-
-" F7/F8 add/remove a breakpoint (pdb.set_trace)
-map <F7> :py set_breakpoint()<cr>
-imap <F7> <ESC>:py set_breakpoint()<CR>i
-noremap <F8> :py remove_breakpoints()<CR>
-noremap <F8> <ESC>:py remove_breakpoints()<CR>i
-
-" ConqueTerm bindings
-map <F9> :ConqueTermTab bash <CR>
-let g:ConqueTerm_ExecFileKey = '<F11>'
+au FileType python imap <buffer> <F7> import pdb; pdb.set_trace() #FIXME
+au FileType php imap <buffer> <F7> hphpd_break(); //FIXME
 
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
 cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
+" Match tmux
+noremap <c-w><c-i> :tabprev<cr>
+noremap <c-w><c-o> :tabnext<cr>
+noremap <c-w><c-t> :tabnew<cr>
+
 " Fix annoying fold defaults
 " fold all
-noremap FH zM
+noremap FJ zM
 " unfold all
-noremap FJ zR
+noremap FK zR
 " toggle fold on method
 noremap FL zA
 
-" Shortcut to delete all buffers
 ca BD bufdo bdelete
 
-" `gf` jumps to the filename under the cursor.  Point at an import statement
-" and jump to it!
+" Edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
-"Quick fix window
-map [q :cprev<CR>
-map ]q :cnext<CR>
+"Clear highlights with ,/
+nmap <silent> <leader>/ :nohlsearch<CR>
 
-" Match tmux
-map <C-w>_ :sp<CR>
-map <C-w>\| :vsp<CR>
-map <C-w>t :tabnew<CR>
 "************************"
-" Python stuff
-" Jump to start of class
-map [c :py start_class()<CR>
-map ]c :py end_class()<CR>
-vmap [c :<C-U>py start_class()<CR>m'gv``
-vmap ]c :<C-U>py end_class()<CR>m'gv``
+" Annoyances
 
-" Jump to start of def
-map [d :py start_def()<CR>
-map ]d :py end_def()<CR>
-vmap [d :<C-U>py start_def()<CR>m'gv``
-vmap ]d :<C-U>py end_def()<CR>m'gv``
+command W w
 
-" Ctrl-c, party like it's 1995
-vmap <C-c> "*y
-"************************"
-" Fix annoyances:
-
-"
 cnoremap <C-k> <UP>
 cnoremap <C-j> <DOWN>
-
-"Save file with sudo if you forgot with w!!
-cmap w!! w !sudo tee % >/dev/null
-
-" Auto completion with ctrl-space
-"inoremap <C-SPACE> <C-n>
-"inoremap <C-Nul> <C-n>
 
 " Annoying when you have just hit shift v for visual mode!
 vnoremap <S-j> j
 vnoremap <S-k> k
 
-  " ctrl tab to change tabs
-noremap <c-w><c-i> :tabprev<cr>
-noremap <c-w><c-o> :tabnext<cr>
-noremap <c-w><c-t> :tabnew<cr>
+"Don't drop select after indent
+vnoremap > >gv
+vnoremap < <gv
 
-" Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
-
-nnoremap ' `
-nnoremap ` '
-
-"Clear highlights with ,/
-nmap <silent> ,/ :nohlsearch<CR>
-
-noremap <C-S-p> "0p
-
-"***********************************************"
-"Pathogen Init
-source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
-if exists("*pathogen#infect")
-  let g:pathogen_disabled=['supertab']
-  call pathogen#infect()
-endif
-
-if version >= 700
-  " colour column
-  set colorcolumn:81
-endif
-
-" NERDTree configuration
-let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
-
-" Breaks Glog
-let g:pyflakes_use_quickfix = 0
-
-" Command-T configuration
-let g:CommandTMaxHeight=20
-"|:CommandTFlush|Instructs the plug-in to flush its path cache
-
-" PyFlakes highlighting
-highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=underline
-
-" % to bounce from do to end etc.
-runtime! macros/matchit.vim
-
-" Make grep load in quickfix window
-autocmd QuickFixCmdPost *grep* cwindow
-
-" Autoread files when changed externally
-set autoread
+"************************"
 
 " Status line config
 set statusline=
 set statusline +=\ %n\ %*            "buffer number
-if exists('g:loaded_pathogen')
-  set statusline +=%{fugitive#statusline()} "fugitive
-endif
+set statusline +=venv=%{virtualenv#statusline()}
 set statusline +=\ %<%F%*            "full path
 set statusline +=%m%*                "modified flag
 set statusline+=%=                           " right align
@@ -195,29 +137,18 @@ set statusline +=%y%*                "file type
 set statusline +=%l%*                  "current line
 set statusline +=/%L%*               "total lines
 set statusline +=\ %c%*             "column number
-"set statusline +=%2*0x%04B\ %*          "character under cursor
 
-"Other boring vim stuff
-set nocompatible
-set title
-set hidden
-set number
-set ruler
-set history=1000
-set scrolloff=3
-syntax on
+"************************"
+" Cursor line
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
 
-set splitbelow
-set splitright
+if version >= 700
+  set colorcolumn:81
+endif
 
-" omnicomplete/supertab settings
-"let g:SuperTabDefaultCompletionType="context"
-"let g:SuperTabContextDefaultCompletionType="<c-x><c-k>"
-"let g:SuperTabLongestHighlight = 1
-
-" Search tags in real time :P
+" Omnicomplete
 set complete-=i
-" Don't guess if you don't know
 set completeopt+=longest
 
 "folding settings
@@ -234,9 +165,9 @@ set encoding=utf-8
 
 " Whitespace stuff
 set nowrap
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 set list listchars=tab:\ \ ,trail:·
 
@@ -262,130 +193,58 @@ set ttymouse=xterm2
 set nobackup
 set noswapfile
 
-"Don't drop select after indent
-:vnoremap > >gv
-:vnoremap < <gv
-
-"Scroll through long lines properly
-nnoremap j gj
-nnoremap k gk
-
-"No arrow keys, don't be lazy!
-"map <up> <nop>
-"map <down> <nop>
-"map <left> <nop>
-"map <right> <nop>
-
-" Python specific
-" More syntax highlighting.
-let python_highlight_all = 1
-
 " Wrap at 72 chars for comments.
 set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
 
-au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 smarttab expandtab nowrap list
-au FileType python map <buffer> <leader>tt :py toggle_comment()<CR>
-au FileType python imap <buffer> <leader>tt <ESC>:py toggle_comment()<CR>i
+" Python
+let python_highlight_all = 1
+" let g:pydoc_cmd = "/usr/local/bin/pydoc"
+" let g:pydoc_open_cmd = "vsplit"
+" let g:pydoc_perform_mappings = 0
+"au FileType python,man silent map <buffer> <leader>pd :call ShowPyDoc('<C-R><C-W>', 1)<CR>
+let g:virtualenv_auto_activate = 1
+" PyFlakes highlighting
+highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=underline
 
+" Other
 au FileType htmldjango set wrap nolist breakat==}>
-
 au FileType json set equalprg=json_reformat
+au BufNewFile,BufRead *.cconf set filetype=python
 
-" Smart indenting
-"set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
-
-let g:pydoc_cmd = "/usr/bin/pydoc"
-let g:pydoc_open_cmd = "vsplit"
-
-" Use :make to see syntax errors. (:cn and :cp to move around, :dist to see
-" all errors)
-set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+let g:NERDCustomDelimiters = {
+    \ 'htmldjango': { 'left': '{% comment %}','right': '{% endcomment %}' },
+    \ }
 
 " load the plugin and indent settings for the detected filetype
 filetype on
 filetype plugin indent on
 
-" Use modeline overrides
+" Stuff
 set modeline
 set modelines=10
-
-" Default color scheme
-color dave256
-
-" MacVIM shift+arrow-keys behavior (required in .vimrc)
-let macvim_hig_shift_movement = 1
-
-" Show (partial) command in the status line
+set splitbelow
+set splitright
+set nocompatible
+set title
+set hidden
+set ruler
+set history=1000
+set scrolloff=3
+set number
+set switchbuf=useopen
+set autoread
 set showcmd
+syntax on
 
-" Custom vim commands
-" Goto def, python aware
-function! SplitGotoDefinition()
-    let curr_win_num = winnr()
-    exe "wincmd j"
-    if (curr_win_num != winnr())
-      q!
-    endif
-    exe 40 . "split"
-    call RopeGotoDefinition()
-    exe "redraw"
-    if (v:statusmsg == "Cannot find the definition!")
-      exe "resize" . 1
-    endif
-    silent z+
-    exe "wincmd k"
-endfunction
+"Scroll through long lines properly
+nnoremap j gj
+nnoremap k gk
 
-" Jump to the next or previous line that has the same level or a lower
-" level of indentation than the current line.
-"
-" exclusive (bool): true: Motion is exclusive
-"                   false: Motion is inclusive
-" fwd (bool): true: Go to next line
-"             false: Go to previous line
-" lowerlevel (bool): true: Go to line with lower indentation level
-"                    false: Go to line with the same indentation level
-" skipblanks (bool): true: Skip blank lines
-"                    false: Don't skip blank lines
-function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
-  let line = line('.')
-  let column = col('.')
-  let lastline = line('$')
-  let indent = indent(line)
-  let stepvalue = a:fwd ? 1 : -1
-  while (line > 0 && line <= lastline)
-    let line = line + stepvalue
-    if ( ! a:lowerlevel && indent(line) == indent ||
-          \ a:lowerlevel && indent(line) < indent)
-      if (! a:skipblanks || strlen(getline(line)) > 0)
-        if (a:exclusive)
-          let line = line - stepvalue
-        endif
-        exe line
-        exe "normal " column . "|"
-        return
-      endif
-    endif
-  endwhile
-endfunction
+"Persistent undo
+silent !mkdir -vp ~/.backup/vim/undo/ > /dev/null 2>&1
+set undofile
+set undodir=~/.backup/vim/undo/,~/tmp,.
 
-nohlsearch
 set t_Co=256
-
-if !has('gui_running')
-  autocmd InsertEnter * set cul
-  autocmd InsertLeave * set nocul
-endif
-
-" tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
-" http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTinkbdoZ8eNR1X2UobLTeww1jFrvfJxTMfKSq-L%2B%40mail.gmail.com&forum_name=tmux-users
-
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
+color dave256
 
