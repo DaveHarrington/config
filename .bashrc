@@ -2,7 +2,10 @@
 
 # User specific aliases and functions
 
-export PATH=/home/drh/usr/bin/:$PATH
+
+if [ -f /home/drh/usr/bin ]; then
+  export PATH=/home/drh/usr/bin/:$PATH
+fi
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
