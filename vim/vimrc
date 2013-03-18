@@ -210,6 +210,7 @@ highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=u
 au FileType htmldjango set wrap nolist breakat==}>
 au FileType json set equalprg=json_reformat
 au BufNewFile,BufRead *.cconf set filetype=python
+au BufRead *.vis so %
 
 let g:NERDCustomDelimiters = {
     \ 'htmldjango': { 'left': '{% comment %}','right': '{% endcomment %}' },
