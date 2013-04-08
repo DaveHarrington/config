@@ -73,6 +73,14 @@ if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM="xterm-256color"
 fi
 
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+function virtualenv() {
+  if [ -n "$VIRTUAL_ENV" ]; then
+    echo "(`basename \"$VIRTUAL_ENV\"`) "
+  fi;
+}
+
 function lastcommandfailed() {
   code=$?
   #echo $code
@@ -156,6 +164,6 @@ LIGHT_PURPLE="\[\033[1;34m\]"
 WHITE="\[\033[1;20m\]"
 CYAN="\[\e[1;35m\]"
 
-BASEPROMPT="[\A] ${HOST}${DEFAULT}:\u \$(lastcommandfailed)${LIGHT_PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${DEFAULT}${HOST}${DEFAULT}:\u \$(lastcommandfailed)${LIGHT_PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\$ ${DEFAULT}"
 export PS1=$PROMPT
