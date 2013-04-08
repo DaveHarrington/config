@@ -28,8 +28,8 @@ if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
 fi
 
 shopt -s cmdhist
+shopt -s checkwinsize # fix long line entry wrapping in bash
 
-export DRH=656681242
 
 export EDITOR=vim
 export INPUTRC=~/.inputrc
@@ -55,11 +55,16 @@ alias ackout='ack'
 alias ack='ack --ignore-case --pager="less -r"'
 
 alias vimlast='cd `git root` && vim -p `git log -n 1 --format="%H" --name-only | tail -n +3`'
-function __vimdiffid {
-    COMMIT=`git log --grep "$@" --format="%H" --since=2month`
-    cd `git root` && vim -p `git log $COMMIT -n 1 --format="%H" --name-only | tail -n +3`
-}
-alias vimdiffid=__vimdiffid
+function __vimgit {
+    echo "`git log $@ -n 1 --color --since=2month --name-only`"
+    FILES=`git log $@ -n 1 --format="%H" --since=2month --name-only | tail -n +3`
+    read -p "Open in VIM (y/n)?" choice
+    case "$choice" in
+        y|Y ) cd `git root` && vim -p `echo "$FILES"`;;
+          * ) ;;
+    esac
+    }
+alias vimgit=__vimgit
 
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM="xterm-256color"
