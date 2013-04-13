@@ -13,6 +13,9 @@ set completion-map-case on
 ### none, visible or audible
 set bell-style none
 
+"\er" history-search-backward
+
+
 ## for linux console
 #"\e[1~": beginning-of-line
 #"\e[4~": end-of-line

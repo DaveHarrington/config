@@ -2,8 +2,7 @@
 
 # User specific aliases and functions
 
-
-if [ -f /home/drh/usr/bin ]; then
+if [ -d /home/drh/usr/bin ]; then
   export PATH=/home/drh/usr/bin/:$PATH
 fi
 
@@ -31,6 +30,8 @@ if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
 fi
 
 shopt -s cmdhist
+shopt -s histappend
+shopt -s dirspell
 
 export DRH=656681242
 
@@ -38,6 +39,9 @@ export EDITOR=vim
 export INPUTRC=~/.inputrc
 export IGNOREEOF=1
 export HISTFILESIZE=100000
+export HISTCONTROL=ignoreboth
+export HISTTIMEFORMAT="%Y.%m.%d %H:%M:%S "
+export PROMPT_COMMAND="history -a"
 
 alias df='df -h'
 alias du='du -h -c'
@@ -64,19 +68,24 @@ function __vimdiffid {
 }
 alias vimdiffid=__vimdiffid
 
+function __shortcuts {
+  echo "C-b     Back char"
+  echo "A-b     Back word"
+  echo "C-f     Forward char"
+  echo "C-] x   Jump fwd to x"
+  echo "A-C-] x Jump back to x"
+  echo "C-y     Paste clipboard"
+  echo "A-y     Paste next in kill ring"
+  echo "C-_     Undo last change"
+  echo "A-r     Undo changes to line"
+  echo "C-A-e   Edit command line in vim"
+  echo "A-r     Search this backwards"
+}
+alias shortcuts=__shortcuts
+
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM="xterm-256color"
 fi
-
-function lastcommandfailed() {
-  code=$?
-  #echo $code
-  if [ $code != 0 ]; then
-    echo -n $'\033[37;1m(exited \033[31;1m'
-    echo -n $code
-    echo -n $'\033[37;1m) '
-  fi
-}
 
 function parse_git_dirty {
   status=`git status 2> /dev/null`
@@ -138,19 +147,36 @@ function parse_git_branch {
     fi
 }
 
-DEFAULT="\[\e[33;0m\]"
-GRAY_COLOR="[37;1m"
-PINK="\[\e[35;1m\]"
-GREEN_COLOR="[32;1m"
-CYAN_COLOR="[36;1m"
-ORANGE="\[\e[33;1m\]"
-RED="\[\033[0;31m\]"
-YELLOW="\[\033[0;33m\]"
-GREEN="\[\e[0;32m\]"
-LIGHT_PURPLE="\[\033[1;34m\]"
-WHITE="\[\033[1;20m\]"
-CYAN="\[\e[1;35m\]"
+function lastcommandfailed() {
+  code=$?
+  if [ $code != 0 ]; then
+    echo "^^^exit code $code "
+  fi
+}
 
-BASEPROMPT="[\A] ${HOST}${DEFAULT}:\u \$(lastcommandfailed)${LIGHT_PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
-PROMPT="${BASEPROMPT}\n${CYAN}\$ ${DEFAULT}"
+DEFAULT="\[\e[33;0m\]"
+BLACK="\[\e[0;30m\]"
+DARK_GRAY="\[\e[1;30m\]"
+BLUE="\[\e[0;34m\]"
+LIGHT_BLUE="\[\e[1;34m\]"
+GREEN="\[\e[0;32m\]"
+LIGHT_GREEN="\[\e[1;32m\]"
+CYAN="\[\e[0;36m\]"
+LIGHT_CYAN="\[\e[1;36m\]"
+RED="\[\e[0;31m\]"
+LIGHT_RED="\[\e[1;31m\]"
+PURPLE="\[\e[0;35m\]"
+LIGHT_PURPLE="\[\e[1;35m\]"
+BROWN="\[\e[0;33m\]"
+YELLOW="\[\e[1;33m\]"
+LIGHT_GRAY="\[\e[0;37m\]"
+WHITE="\[\e[1;37m\]"
+
+USER="\u"
+if [[ `hostname` == drh-mbp1* || `hostname` =~ .*thefacebook.com ]]; then
+  HOST="🍯  "
+fi
+
+BASEPROMPT="[\A] ${HOST}${DEFAULT}${USER} ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
