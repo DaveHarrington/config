@@ -31,7 +31,6 @@ fi
 
 shopt -s cmdhist
 shopt -s histappend
-shopt -s dirspell
 shopt -s checkwinsize # fix long line entry wrapping in bash
 
 export EDITOR=vim
@@ -91,8 +90,6 @@ if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM="xterm-256color"
 fi
 
-<<<<<<< HEAD
-=======
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 function virtualenv() {
@@ -111,7 +108,6 @@ function lastcommandfailed() {
   fi
 }
 
->>>>>>> f11729eae6a94dddb5811eb7ef73c5086c19c5c1
 function parse_git_dirty {
   status=`git status 2> /dev/null`
   dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
@@ -202,11 +198,6 @@ if [[ `hostname` == drh-mbp1* || `hostname` =~ .*thefacebook.com ]]; then
   HOST="🍯  "
 fi
 
-<<<<<<< HEAD
-BASEPROMPT="[\A] ${HOST}${DEFAULT}${USER} ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${DEFAULT}${HOST}${DEFAULT}${USER} ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
-=======
-BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${DEFAULT}${HOST}${DEFAULT}:\u \$(lastcommandfailed)${LIGHT_PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
-PROMPT="${BASEPROMPT}\n${CYAN}\$ ${DEFAULT}"
->>>>>>> f11729eae6a94dddb5811eb7ef73c5086c19c5c1
 export PS1=$PROMPT
