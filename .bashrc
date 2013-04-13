@@ -32,8 +32,7 @@ fi
 shopt -s cmdhist
 shopt -s histappend
 shopt -s dirspell
-
-export DRH=656681242
+shopt -s checkwinsize # fix long line entry wrapping in bash
 
 export EDITOR=vim
 export INPUTRC=~/.inputrc
@@ -62,11 +61,16 @@ alias ackout='ack'
 alias ack='ack --ignore-case --pager="less -r"'
 
 alias vimlast='cd `git root` && vim -p `git log -n 1 --format="%H" --name-only | tail -n +3`'
-function __vimdiffid {
-    COMMIT=`git log --grep "$@" --format="%H" --since=2month`
-    cd `git root` && vim -p `git log $COMMIT -n 1 --format="%H" --name-only | tail -n +3`
-}
-alias vimdiffid=__vimdiffid
+function __vimgit {
+    echo "`git log $@ -n 1 --color --since=2month --name-only`"
+    FILES=`git log $@ -n 1 --format="%H" --since=2month --name-only | tail -n +3`
+    read -p "Open in VIM (y/n)?" choice
+    case "$choice" in
+        y|Y ) cd `git root` && vim -p `echo "$FILES"`;;
+          * ) ;;
+    esac
+    }
+alias vimgit=__vimgit
 
 function __shortcuts {
   echo "C-b     Back char"
@@ -87,6 +91,27 @@ if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM="xterm-256color"
 fi
 
+<<<<<<< HEAD
+=======
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+function virtualenv() {
+  if [ -n "$VIRTUAL_ENV" ]; then
+    echo "(`basename \"$VIRTUAL_ENV\"`) "
+  fi;
+}
+
+function lastcommandfailed() {
+  code=$?
+  #echo $code
+  if [ $code != 0 ]; then
+    echo -n $'\033[37;1m(exited \033[31;1m'
+    echo -n $code
+    echo -n $'\033[37;1m) '
+  fi
+}
+
+>>>>>>> f11729eae6a94dddb5811eb7ef73c5086c19c5c1
 function parse_git_dirty {
   status=`git status 2> /dev/null`
   dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
@@ -177,6 +202,11 @@ if [[ `hostname` == drh-mbp1* || `hostname` =~ .*thefacebook.com ]]; then
   HOST="🍯  "
 fi
 
+<<<<<<< HEAD
 BASEPROMPT="[\A] ${HOST}${DEFAULT}${USER} ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
+=======
+BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${DEFAULT}${HOST}${DEFAULT}:\u \$(lastcommandfailed)${LIGHT_PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+PROMPT="${BASEPROMPT}\n${CYAN}\$ ${DEFAULT}"
+>>>>>>> f11729eae6a94dddb5811eb7ef73c5086c19c5c1
 export PS1=$PROMPT
