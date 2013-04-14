@@ -193,11 +193,10 @@ YELLOW="\[\e[1;33m\]"
 LIGHT_GRAY="\[\e[0;37m\]"
 WHITE="\[\e[1;37m\]"
 
-USER="\u"
 if [[ `hostname` == drh-mbp1* || `hostname` =~ .*thefacebook.com ]]; then
   HOST="🍯  "
 fi
 
-BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${DEFAULT}${HOST} ${DEFAULT}${USER} ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${LIGHT_GRAY}${HOST} ${DEFAULT}\\u ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
