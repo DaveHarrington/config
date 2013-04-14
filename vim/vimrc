@@ -251,13 +251,10 @@ color dave256
 
 function! FindAndEdit(filename)
   let l:filesplit = split(a:filename, "/")
-  let l:cwd = split(getcwd(), "/")
-  let l:ind = index(cwd, filesplit[0])
-  if l:ind > 0
-    " If the root of the searched file is in the cwd tree
-    let l:filesplit = [''] + l:cwd[0:l:ind-1] + l:filesplit
+  if l:filesplit[0] == "www"
+    let l:filesplit = ["/home/drh/"] + l:filesplit
   endif
   execute "edit " . join(l:filesplit, "/")
 endfunction
 
-command! -nargs=1 F :call FindAndEdit('<args>')
+command! -nargs=1 E :call FindAndEdit('<args>')
