@@ -72,17 +72,17 @@ function __vimgit {
 alias vimgit=__vimgit
 
 function __shortcuts {
-  echo "C-b     Back char"
-  echo "A-b     Back word"
-  echo "C-f     Forward char"
-  echo "C-] x   Jump fwd to x"
-  echo "A-C-] x Jump back to x"
-  echo "C-y     Paste clipboard"
-  echo "A-y     Paste next in kill ring"
-  echo "C-_     Undo last change"
-  echo "A-r     Undo changes to line"
-  echo "C-A-e   Edit command line in vim"
-  echo "A-r     Search this backwards"
+  echo "C-b       Back char"
+  echo "A-b       Back word"
+  echo "C-f       Forward char"
+  echo "C-] x     Jump fwd to x"
+  echo "A-C-] x   Jump back to x"
+  echo "C-y       Paste clipboard"
+  echo "A-y       Paste next in kill ring"
+  echo "C-_       Undo last change"
+  echo "A-r       Undo changes to line"
+  echo "C-x C-e   Edit command line in vim"
+  echo "A-r       Search this backwards"
 }
 alias shortcuts=__shortcuts
 
@@ -197,6 +197,6 @@ if [[ `hostname` == drh-mbp1* || `hostname` =~ .*thefacebook.com ]]; then
   HOST="🍯  "
 fi
 
-BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${LIGHT_GRAY}${HOST} ${DEFAULT}\\u ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="[\A] ${CYAN}\$(virtualenv)${LIGHT_GRAY}${HOST} ${DEFAULT}\u ${RED}\$(lastcommandfailed)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
