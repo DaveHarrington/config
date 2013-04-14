@@ -11,8 +11,8 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-if [ -f ~/config/fb_bashrc ]; then
-  source ~/config/fb_bashrc
+if [ -f ~/config/fb_bashrc.sh ]; then
+  source ~/config/fb_bashrc.sh
 fi
 
 if [ -f ~/.tmux/tmux.completion.bash ]; then
@@ -193,13 +193,17 @@ YELLOW="\[\e[1;33m\]"
 LIGHT_GRAY="\[\e[0;37m\]"
 WHITE="\[\e[1;37m\]"
 
-if [[ -z "HOST" && `hostname` == drh-mbp1* || `hostname` =~ .*facebook.com ]]; then
-  HOST="🍯  "
+if [[ -z "$HOST" ]]; then
+  if [[ `hostname` == drh-mbp1* || `hostname` =~ .*facebook.com ]]; then
+    HOST="🍯  "
+  else
+    HOST=`hostname`
+  fi
 fi
 
-BASEPROMPT="[\A] ${RED}\$(lastcommandfailed)${CYAN}\$(virtualenv)${LIGHT_GRAY}${HOST}${DEFAULT}\u ${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="[\A] ${RED}\$(lastcommandfailed)${CYAN}\$(virtualenv)${DARK_GRAY}${HOST} ${DEFAULT}\u ${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
 
-fortune || true
+if [[ -f fortune ]]; then fortune; fi
 
