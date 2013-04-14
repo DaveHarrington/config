@@ -195,7 +195,7 @@ WHITE="\[\e[1;37m\]"
 
 if [[ -z "$HOST" ]]; then
   if [[ `hostname` == drh-mbp1* || `hostname` =~ .*facebook.com ]]; then
-    HOST="🍯  "
+    HOST="🍯 "
   else
     HOST=`hostname`
   fi
