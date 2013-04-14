@@ -1,6 +1,6 @@
-# .bashrc
+#.bashrc
 
-# User specific aliases and functions
+#User specific aliases and functions
 
 if [ -d /home/drh/usr/bin ]; then
   export PATH=/home/drh/usr/bin/:$PATH
@@ -205,5 +205,5 @@ BASEPROMPT="[\A] ${RED}\$(lastcommandfailed)${CYAN}\$(virtualenv)${DARK_GRAY}${H
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
 
-if [[ -f fortune ]]; then fortune; fi
+if [[ -x `which fortune` ]]; then fortune; fi
 
