@@ -110,7 +110,7 @@ nmap <silent> <leader>/ :nohlsearch<CR>
 "************************"
 " Annoyances
 
-command W w
+command! W w
 
 cnoremap <C-k> <UP>
 cnoremap <C-j> <DOWN>
@@ -249,3 +249,15 @@ set undodir=~/.backup/vim/undo/,~/tmp,.
 set t_Co=256
 color dave256
 
+function! FindAndEdit(filename)
+  let l:filesplit = split(a:filename, "/")
+  let l:cwd = split(getcwd(), "/")
+  let l:ind = index(cwd, filesplit[0])
+  if l:ind > 0
+    " If the root of the searched file is in the cwd tree
+    let l:filesplit = [''] + l:cwd[0:l:ind-1] + l:filesplit
+  endif
+  execute "edit " . join(l:filesplit, "/")
+endfunction
+
+command! -nargs=1 F :call FindAndEdit('<args>')
