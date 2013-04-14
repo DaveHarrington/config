@@ -2,8 +2,9 @@
 
 #User specific aliases and functions
 
-if [ -d /home/drh/usr/bin ]; then
+if [ -d /home/drh/usr ]; then
   export PATH=/home/drh/usr/bin/:$PATH
+  export LD_LIBRARY_PATH=${HOME}/usr/lib/:${LD_LIBRARY_PATH}
 fi
 
 # Source global definitions
