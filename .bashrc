@@ -205,5 +205,5 @@ BASEPROMPT="[\A] ${RED}\$(lastcommandfailed)${CYAN}\$(virtualenv)${DARK_GRAY}${H
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
 
-if [[ -x `which fortune` ]]; then fortune; fi
+if `command -v fortune`; then fortune; fi
 
