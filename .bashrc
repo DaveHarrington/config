@@ -202,7 +202,7 @@ if [[ -z "$HOST" ]]; then
   fi
 fi
 
-BASEPROMPT="[\A] ${RED}\$(lastcommandfailed)${CYAN}\$(virtualenv)${DARK_GRAY}${HOST} ${DEFAULT}\u ${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="[\A] ${RED}\$(lastcommandfailed)${DARK_GRAY}${HOST} ${DEFAULT}\u ${CYAN}\$(virtualenv)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
 
