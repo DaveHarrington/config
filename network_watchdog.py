@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# sudo python network_watchdog.py -d
+
 import re
 import sys
 import time
@@ -7,17 +9,17 @@ import logging
 import logging.handlers
 import subprocess
 
+FAVOUR_WIFI = -50 #ms
 WIFI_TARGET = "64.64.30.210"
-# WIFI_GATEWAY = "192.168.1.1"
-WIFI_GATEWAY = "172.20.0.1"
+WIFI_GATEWAY = "192.168.1.1"
+# WIFI_GATEWAY = "172.20.0.1" # Lighthouse
 USB_TARGET = "50.56.215.46"
 USB_GATEWAY = "10.0.1.1"
 
-MIN_SWITCH_DELAY = 10
-SLEEP_PERIOD = 2
-HYSTERISIS_THRESHOLD = 300 #ms
-FAVOUR_WIFI = -200 #ms
-MAX_FILTER_LEN = 5
+MIN_SWITCH_DELAY = 0
+SLEEP_PERIOD = 1
+HYSTERISIS_THRESHOLD = 50 #ms
+MAX_FILTER_LEN = 3
 BUFF_MIN_LEN = 3
 
 WIFI = 'Wi-Fi'
@@ -83,7 +85,7 @@ def setup_routes():
 ping_regex = re.compile(r'.*= (\d+)')
 def ping(addr):
   try:
-    ping_raw = local("ping -c 1 -t 5 -s 200 %s" % addr)
+    ping_raw = local("ping -c 1 -t 1 -s 200 %s" % addr)
   except subprocess.CalledProcessError:
     return
   if len(ping_raw) < 7:
@@ -108,7 +110,6 @@ def delete_routes():
 def get_logger(debug=False):
   logging.basicConfig()
   logger = logging.getLogger('network_watchdog')
-  logger.addHandler(logging.handlers.SysLogHandler('/var/run/syslog'))
   logger.setLevel(logging.DEBUG if debug else logging.INFO)
 
   return logger

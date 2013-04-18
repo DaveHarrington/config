@@ -13,8 +13,8 @@ set completion-map-case on
 ### none, visible or audible
 set bell-style none
 
-"\er" history-search-backward
-
+"\e[A": history-search-backward
+"\e[B": history-search-forward
 
 ## for linux console
 #"\e[1~": beginning-of-line
