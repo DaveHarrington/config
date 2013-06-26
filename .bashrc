@@ -56,11 +56,12 @@ alias gl='git log --graph --pretty="format:%C(yellow)%h%Cblue%d%Creset %s %C(whi
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative" 
 alias gdiffbranch='git diff master...HEAD'
 alias glost='git fsck --unreachable | grep commit | cut -d\  -f3 | xargs git log --merges --no-walk --grep=WIP'
+alias amend='git add -p && git amendx'
 alias tm='tmux detach || true && tmux attach-session -t main'
-alias ackout='ack'
-alias ack='ack --ignore-case --pager="less -r"'
+alias ack='ack --ignore-case'
 
 alias vimlast='cd `git root` && vim -p `git log -n 1 --format="%H" --name-only | tail -n +3`'
+alias vimindex='cd `git root` && vim -p `git status --porcelain | cut -d" " -f3`'
 function __vimgit {
     echo "`git log $@ -n 1 --color --since=2month --name-only`"
     FILES=`git log $@ -n 1 --format="%H" --since=2month --name-only | tail -n +3`
@@ -202,7 +203,7 @@ if [[ -z "$HOST" ]]; then
   fi
 fi
 
-BASEPROMPT="[\A] ${RED}\$(lastcommandfailed)${DARK_GRAY}${HOST} ${DEFAULT}\u ${CYAN}\$(virtualenv)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="${RED}\$(lastcommandfailed)${DARK_GRAY}${HOST} ${DEFAULT}\u ${CYAN}\$(virtualenv)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
 
