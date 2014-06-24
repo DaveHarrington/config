@@ -46,17 +46,17 @@ nnoremap gW :call EasyMotion#WB(0, 1)<CR>
 vmap <C-c><C-c> "ry :call Send_to_Tmux(@r)<CR>
 
 "neocomplcache
-imap <C-k> <Plug>(neocomplcache_snippets_expand)
-smap <C-k> <Plug>(neocomplcache_snippets_expand)
-inoremap <expr><C-g> neocomplcache#undo_completion()
-inoremap <expr><C-l> neocomplcache#complete_common_string()
-inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
+" imap <C-k> <Plug>(neocomplcache_snippets_expand)
+" smap <C-k> <Plug>(neocomplcache_snippets_expand)
+" inoremap <expr><C-g> neocomplcache#undo_completion()
+" inoremap <expr><C-l> neocomplcache#complete_common_string()
+" inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
 
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
+" inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+" inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+" inoremap <expr><C-y>  neocomplcache#close_popup()
+" inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 "Gundo
 map <leader>u :GundoToggle<CR>
@@ -194,7 +194,7 @@ set nobackup
 set noswapfile
 
 " Wrap at 72 chars for comments.
-set formatoptions=cq textwidth=72 foldignore= wildignore+=*.py[co]
+set formatoptions=cq textwidth=0 foldignore= wildignore+=*.py[co]
 
 " Python
 let python_highlight_all = 1
@@ -209,6 +209,7 @@ highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=u
 " Other
 au FileType htmldjango set wrap nolist breakat==}>
 au FileType json set equalprg=json_reformat
+au BufRead,BufNewFile *.txt set textwidth=0 wrap nolist linebreak
 au BufNewFile,BufRead *.cconf set filetype=python
 au BufRead *.vis so %
 

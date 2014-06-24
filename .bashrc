@@ -2,6 +2,8 @@
 
 #User specific aliases and functions
 
+export PATH=/usr/local/bin:/usr/local/share/python:$PATH
+
 if [ -d /home/drh/usr ]; then
   export PATH=/home/drh/usr/bin/:$PATH
   export LD_LIBRARY_PATH=${HOME}/usr/lib/:${LD_LIBRARY_PATH}
@@ -22,6 +24,11 @@ fi
 
 if [ -f ~/config/fabric-completion.bash ]; then
   source ~/config/fabric-completion.bash
+fi
+
+if [ -d /usr/local/Cellar/todo-txt/2.9 ]; then
+  source /usr/local/Cellar/todo-txt/2.9/etc/bash_completion.d/todo_completion complete -F _todo t
+  alias t='/usr/local/Cellar/todo-txt/2.9/bin/todo.sh -d /usr/local/Cellar/todo-txt/2.9/todo.cfg'
 fi
 
 export PYTHONSTARTUP=~/.pythonrc.py
