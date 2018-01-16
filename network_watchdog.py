@@ -11,10 +11,10 @@ import subprocess
 
 FAVOUR_WIFI = -50 #ms
 WIFI_TARGET = "64.64.30.210"
-WIFI_GATEWAY = "192.168.1.1"
+WIFI_GATEWAY = "10.128.6.1"
 # WIFI_GATEWAY = "172.20.0.1" # Lighthouse
-USB_TARGET = "50.56.215.46"
-USB_GATEWAY = "10.0.1.1"
+USB_TARGET = "74.125.239.104"
+USB_GATEWAY = "192.168.44.1"
 
 MIN_SWITCH_DELAY = 0
 SLEEP_PERIOD = 1
@@ -23,7 +23,7 @@ MAX_FILTER_LEN = 3
 BUFF_MIN_LEN = 3
 
 WIFI = 'Wi-Fi'
-USB = 'Sierra'
+USB = 'Bluetooth PAN'
 
 def main():
   logger = get_logger(debug=('-d' in sys.argv))

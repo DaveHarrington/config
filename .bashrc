@@ -2,7 +2,7 @@
 
 #User specific aliases and functions
 
-export PATH=/usr/local/bin:/usr/local/share/python:$PATH
+export PATH=/usr/local/bin:$PATH
 
 if [ -d /home/drh/usr ]; then
   export PATH=/home/drh/usr/bin/:$PATH

@@ -32,15 +32,21 @@ let g:tcommentMapLeader1 = ''
 let g:tcommentMapLeader2 = ''
 let g:tcommentMapLeaderOp2 = ''
 
-let g:EasyMotion_do_mapping = 0
-vnoremap gw :<C-U>call EasyMotion#WB(1, 0)<CR>
-inoremap gw :call EasyMotion#WB(0, 0)<CR>
-onoremap gw :call EasyMotion#WB(0, 0)<CR>
-nnoremap gw :call EasyMotion#WB(0, 0)<CR>
-vnoremap gW :<C-U>call EasyMotion#WB(1, 1)<CR>
-inoremap gW :call EasyMotion#WB(0, 1)<CR>
-onoremap gW :call EasyMotion#WB(0, 1)<CR>
-nnoremap gW :call EasyMotion#WB(0, 1)<CR>
+" Ctrl-c -> Esc
+" https://unix.stackexchange.com/questions/40086/exiting-block-insert-mode-with-ctrl-c
+vnoremap <C-c> <Esc>
+nnoremap <C-c> <Esc>
+inoremap <C-c> <Esc>
+
+" let g:EasyMotion_do_mapping = 0
+" vnoremap gw :<C-U>call EasyMotion#WB(1, 0)<CR>
+" inoremap gw :call EasyMotion#WB(0, 0)<CR>
+" onoremap gw :call EasyMotion#WB(0, 0)<CR>
+" nnoremap gw :call EasyMotion#WB(0, 0)<CR>
+" vnoremap gW :<C-U>call EasyMotion#WB(1, 1)<CR>
+" inoremap gW :call EasyMotion#WB(0, 1)<CR>
+" onoremap gW :call EasyMotion#WB(0, 1)<CR>
+" nnoremap gW :call EasyMotion#WB(0, 1)<CR>
 
 "tslime
 vmap <C-c><C-c> "ry :call Send_to_Tmux(@r)<CR>
@@ -164,12 +170,15 @@ set backspace=indent,eol,start
 set encoding=utf-8
 
 " Whitespace stuff
-set nowrap
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-set list listchars=tab:\ \ ,trail:·
+set listchars=tab:▸\ ,eol:¬
+
+" Wrap nicely, I write text these days
+set nolist 
+set wrap
 
 " Searching
 set hlsearch
@@ -259,3 +268,5 @@ function! FindAndEdit(filename)
 endfunction
 
 command! -nargs=1 E :call FindAndEdit('<args>')
+
+let g:evervim_devtoken='S=s208:U=1759c27:E=152118524d1:C=14ab9d3f720:P=1cd:A=en-devtoken:V=2:H=43355a4e7a3d6d37bdfb545939964f31'
