@@ -2,6 +2,12 @@
 " All custom keybindings
 "
 "***********************************************"
+"
+let s:xterm = &term =~ 'xterm'
+let s:tmux = exists('$TMUX')
+let s:iterm = s:tmux
+
+let g:hack#enable = 1
 
 "Pathogen Init
 source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
@@ -32,12 +38,6 @@ let g:tcommentMapLeader1 = ''
 let g:tcommentMapLeader2 = ''
 let g:tcommentMapLeaderOp2 = ''
 
-" Ctrl-c -> Esc
-" https://unix.stackexchange.com/questions/40086/exiting-block-insert-mode-with-ctrl-c
-vnoremap <C-c> <Esc>
-nnoremap <C-c> <Esc>
-inoremap <C-c> <Esc>
-
 " let g:EasyMotion_do_mapping = 0
 " vnoremap gw :<C-U>call EasyMotion#WB(1, 0)<CR>
 " inoremap gw :call EasyMotion#WB(0, 0)<CR>
@@ -57,8 +57,8 @@ vmap <C-c><C-c> "ry :call Send_to_Tmux(@r)<CR>
 " inoremap <expr><C-g> neocomplcache#undo_completion()
 " inoremap <expr><C-l> neocomplcache#complete_common_string()
 " inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
-
-" <C-h>, <BS>: close popup and delete backword char.
+" 
+" " <C-h>, <BS>: close popup and delete backword char.
 " inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 " inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 " inoremap <expr><C-y>  neocomplcache#close_popup()
@@ -71,21 +71,28 @@ map <leader>u :GundoToggle<CR>
 map <Leader>g :TBGS
 map <Leader>w :TBGW<CR>
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_use_caching = 1
-let g:ctrlp_switch_buffer = ''
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-let g:ctrlp_extensions = ['tag']
-map <C-y> :CtrlPMRU<CR>
+" let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_working_path_mode = 'ra'
+" let g:ctrlp_use_caching = 1
+" let g:ctrlp_switch_buffer = ''
+" let g:ctrlp_clear_cache_on_exit = 0
+" let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+" let g:ctrlp_extensions = ['tag']
+" map <C-y> :CtrlPMRU<CR>
+
+let g:CommandTMaxFiles=1000000
+let g:CommandTFileScanner='watchman'
+nnoremap <silent> <C-p> :CommandT<CR>
+nnoremap <silent> <C-y> :CommandTBuffer<CR>
 
 "Remove all trailing whitespace
 nnoremap <silent> <F3> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+"<F8> is autopep8, from plugin
 map <F4> :syntax sync fromstart<CR>
-au FileType python imap <buffer> <F7> import pdb; pdb.set_trace() #FIXME
+au FileType python imap <buffer> <F7> import pdb; pdb.set_trace()  # FIXME
 au FileType php imap <buffer> <F7> hphpd_break(); //FIXME
+let g:syntastic_disabled_filetypes=['php']
 
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
@@ -132,26 +139,22 @@ vnoremap < <gv
 "************************"
 
 " Status line config
-set statusline=
-set statusline +=\ %n\ %*            "buffer number
-set statusline +=venv=%{virtualenv#statusline()}
-set statusline +=\ %<%F%*            "full path
-set statusline +=%m%*                "modified flag
-set statusline+=%=                           " right align
-set statusline +=%{v:register}
-set statusline +=%y%*                "file type
-set statusline +=%l%*                  "current line
-set statusline +=/%L%*               "total lines
-set statusline +=\ %c%*             "column number
+" set statusline=
+" set statusline +=\ %n\ %*            "buffer number
+" set statusline +=venv=%{virtualenv#statusline()}
+" set statusline +=\ %<%F%*            "full path
+" set statusline +=%m%*                "modified flag
+" set statusline+=%=                           " right align
+" set statusline +=%{v:register}
+" set statusline +=%y%*                "file type
+" set statusline +=%l%*                  "current line
+" set statusline +=/%L%*               "total lines
+" set statusline +=\ %c%*             "column number
 
 "************************"
 " Cursor line
 autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
-
-if version >= 700
-  set colorcolumn:81
-endif
 
 " Omnicomplete
 set complete-=i
@@ -170,15 +173,12 @@ set backspace=indent,eol,start
 set encoding=utf-8
 
 " Whitespace stuff
+set nowrap
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-set listchars=tab:▸\ ,eol:¬
-
-" Wrap nicely, I write text these days
-set nolist 
-set wrap
+set list listchars=tab:\ \ ,trail:·
 
 " Searching
 set hlsearch
@@ -188,6 +188,7 @@ set smartcase
 
 " Tab completion
 set wildmode=list:longest,list:full
+set wildmenu
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
 
 " Status bar
@@ -196,7 +197,6 @@ set laststatus=2
 " enable using the mouse if terminal emulator
 " supports it (xterm does)
 set mouse=a
-set ttymouse=xterm2
 
 " Eh, swapfiles
 set nobackup
@@ -211,15 +211,19 @@ let python_highlight_all = 1
 " let g:pydoc_open_cmd = "vsplit"
 " let g:pydoc_perform_mappings = 0
 "au FileType python,man silent map <buffer> <leader>pd :call ShowPyDoc('<C-R><C-W>', 1)<CR>
+au FileType python set shiftwidth=4 tabstop=8 expandtab
 let g:virtualenv_auto_activate = 1
 " PyFlakes highlighting
 highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=underline
 
+let g:syntastic_python_flake8_args = '--ignore="E302,E121,E122,E123,E126,E127,E128,E501,E265"'
+
 " Other
 au FileType htmldjango set wrap nolist breakat==}>
 au FileType json set equalprg=json_reformat
-au BufRead,BufNewFile *.txt set textwidth=0 wrap nolist linebreak
-au BufNewFile,BufRead *.cconf set filetype=python
+au BufNewFile,BufRead *.cconf set syntax=python
+au BufNewFile,BufRead *.tw set syntax=python
+au BufNewFile,BufRead *.cinc set syntax=python
 au BufRead *.vis so %
 
 let g:NERDCustomDelimiters = {
@@ -253,8 +257,11 @@ nnoremap k gk
 
 "Persistent undo
 silent !mkdir -vp ~/.backup/vim/undo/ > /dev/null 2>&1
-set undofile
-set undodir=~/.backup/vim/undo/,~/tmp,.
+if version >= 703
+  set undofile
+  set undodir=~/.backup/vim/undo/,~/tmp,.
+  set colorcolumn:81
+endif
 
 set t_Co=256
 color dave256
@@ -269,4 +276,14 @@ endfunction
 
 command! -nargs=1 E :call FindAndEdit('<args>')
 
-let g:evervim_devtoken='S=s208:U=1759c27:E=152118524d1:C=14ab9d3f720:P=1cd:A=en-devtoken:V=2:H=43355a4e7a3d6d37bdfb545939964f31'
+""
+"https://github.com/wincent/wincent/blob/bff9eb90f04b7/.vim/plugin/term.vim
+
+if has('mouse')
+  set mouse=a
+  if s:xterm
+    set ttymouse=xterm2
+  endif
+endif
+
+set termguicolors
