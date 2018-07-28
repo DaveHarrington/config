@@ -5,7 +5,12 @@
 [color]
     ui = auto
 [alias]
-    co = checkout
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	unstage = reset HEAD --
+	last = log -1 HEAD
 
 [github]
 	user = dave@lightbox.com
