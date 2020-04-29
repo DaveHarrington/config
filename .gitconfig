@@ -1,6 +1,6 @@
 [user]
 	name = Dave Harrington
-	email = dave@lightbox.com
+	email = dharrington@lyft.com
 
 [color]
     ui = auto
@@ -16,7 +16,7 @@
 	user = dave@lightbox.com
 	token = 88ff5d47fbd77fc639d984d8cd67995f
 [core]
-	excludesfile = /Users/dave/.gitignore
+	excludesfile = /Users/dharrington/.gitignore
 	quotepath = false
 	editor = vim
 [push]
@@ -25,3 +25,7 @@
 	browser = ff
 [browser "ff"]
 	cmd = open -a Firefox.app
+[init]
+	templateDir = /opt/lyft/.git-template
+[url "git@github.com:"]
+	insteadOf = https://github.com/

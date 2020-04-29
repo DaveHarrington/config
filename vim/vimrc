@@ -3,6 +3,9 @@
 "
 "***********************************************"
 "
+if has('python3')
+endif
+
 let s:xterm = &term =~ 'xterm'
 let s:tmux = exists('$TMUX')
 let s:iterm = s:tmux
@@ -17,6 +20,7 @@ if exists("*pathogen#infect")
 endif
 
 let mapleader = ','
+
 
 "Surround
 " cs"'

@@ -1,9 +1,16 @@
+export PATH="$HOME/bin:$HOME/Library/Python/3.7/bin:$PATH"
+
 if [ -f ~/.tmux/tmux.completion.bash ]; then
   . ~/.tmux/tmux.completion.bash
 fi
 
 if [ -f ~/config/fabric-completion.bash ]; then
   source ~/config/fabric-completion.bash
+fi
+
+if [ -d /usr/local/Cellar/todo-txt/2.9 ]; then
+  source /usr/local/Cellar/todo-txt/2.9/etc/bash_completion.d/todo_completion complete -F _todo t
+  alias t='/usr/local/Cellar/todo-txt/2.9/bin/todo.sh -d /usr/local/Cellar/todo-txt/2.9/todo.cfg'
 fi
 
 shopt -s cmdhist
@@ -22,17 +29,21 @@ alias df='df -h'
 alias du='du -h -c'
 alias mkdir='mkdir -p'
 alias grep='grep --colour'
-alias gist='hub gist create'
-alias wip='git commit -am"wip" --no-verify'
-alias shipit='(pre-commit run --all || pre-commit run --all) && git commit --no-verify -am"$@"'
-alias amend='git add . && (pre-commit run --all || pre-commit run --all) && git commit --amend --no-verify'
-alias sudoshell='PS1="# " aws-okta exec zimride-sudo-developer -- $SHELL'
 
-function ts {
-    echo "START" | command ts "[%Y-%m-%d %H:%M:%S]"
-    unbuffer "$@" | command ts "[%Y-%m-%d %H:%M:%S]"
-    echo "DONE" | command ts "[%Y-%m-%d %H:%M:%S]"
-}
+alias lc='local_control'
+
+# Git alias
+# alias gst='git status -sb'
+# alias gls='git branch -r | grep -v "origin\/v"'
+# alias gtool='git difftool -y -t opendiff'
+# alias glogbranch='git log --oneline --decorate master..HEAD'
+# alias gl='git log --graph --pretty="format:%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset"'
+# alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative" 
+# alias gdiffbranch='git diff master...HEAD'
+# alias glost='git fsck --unreachable | grep commit | cut -d\  -f3 | xargs git log --merges --no-walk --grep=WIP'
+# alias amend='git add -p && git amendx'
+# alias tm='tmux detach || true && tmux attach-session -t main'
+# alias ack='ack --ignore-case'
 
 alias vimlast='cd `git root` && vim -p `git log -n 1 --format="%H" --name-only | tail -n +3`'
 alias vimindex='cd `git root` && vim -p `git status --porcelain | cut -d" " -f3`'
@@ -83,7 +94,6 @@ function lastcommandfailed() {
     echo -n $'\033[37;1m) '
   fi
 }
-alias gistbuffer='tmux save-buffer - | gist'
 
 function parse_git_dirty {
   status=`git status 2> /dev/null`
@@ -178,14 +188,12 @@ if [[ -z "$HOST" ]]; then
   fi
 fi
 
-BASEPROMPT="🐶 ${RED}\$(lastcommandfailed)${DARK_GRAY}${HOST} ${DEFAULT}\u ${LIGHT_BLUE}\$(curr_context)${CYAN}\$(virtualenv)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
+BASEPROMPT="${RED}\$(lastcommandfailed)${DARK_GRAY}${HOST} ${DEFAULT}\u ${CYAN}\$(virtualenv)${PURPLE}\$(parse_git_branch)${RED}\$(parse_git_stash) ${GREEN}\w${DEFAULT}"
 PROMPT="${BASEPROMPT}\n${CYAN}\\$ ${DEFAULT}"
 export PS1=$PROMPT
 
 if `command -v fortune`; then fortune; fi
 
-# source '/Users/dharrington/awsaccess/awsaccess2.sh' # awsaccess
-# source '/Users/dharrington/awsaccess/oktaawsaccess.sh' # oktaawsaccess
-# export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
-
-eval "$(/opt/lyft/brew/bin/aactivator init)"
+source '/Users/dharrington/awsaccess/awsaccess2.sh' # awsaccess
+source '/Users/dharrington/awsaccess/oktaawsaccess.sh' # oktaawsaccess
+export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
