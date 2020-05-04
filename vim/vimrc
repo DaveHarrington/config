@@ -6,11 +6,12 @@
 if has('python3')
 endif
 
+color dave256
+let mapleader = ','
+
 let s:xterm = &term =~ 'xterm'
 let s:tmux = exists('$TMUX')
 let s:iterm = s:tmux
-
-let g:hack#enable = 1
 
 "Pathogen Init
 source ~/config/vim/bundle/vim-pathogen/autoload/pathogen.vim
@@ -19,88 +20,22 @@ if exists("*pathogen#infect")
   call pathogen#infect()
 endif
 
-let mapleader = ','
-
-
-"Surround
-" cs"'
-" ds"
-" yss" #line
-" ysiw" #word
-
-"sudo
-":e sudo:/etc/passwd
+" Annoying when paste then replaces buffer
+" https://superuser.com/questions/321547/how-do-i-replace-paste-yanked-text-in-vim-without-yanking-the-deleted-lines
+vnoremap p "0p
+vnoremap P "0P
+vnoremap y "0y
+vnoremap d "0d
 
 " Quicklist
 nnoremap ]q :cnext<cr>
 nnoremap [q :cprevious<cr>
 
-"comment
-" n:gcc
-" v:gc
-let g:tcommentMapLeader1 = ''
-let g:tcommentMapLeader2 = ''
-let g:tcommentMapLeaderOp2 = ''
-
-" let g:EasyMotion_do_mapping = 0
-" vnoremap gw :<C-U>call EasyMotion#WB(1, 0)<CR>
-" inoremap gw :call EasyMotion#WB(0, 0)<CR>
-" onoremap gw :call EasyMotion#WB(0, 0)<CR>
-" nnoremap gw :call EasyMotion#WB(0, 0)<CR>
-" vnoremap gW :<C-U>call EasyMotion#WB(1, 1)<CR>
-" inoremap gW :call EasyMotion#WB(0, 1)<CR>
-" onoremap gW :call EasyMotion#WB(0, 1)<CR>
-" nnoremap gW :call EasyMotion#WB(0, 1)<CR>
-
-"tslime
-vmap <C-c><C-c> "ry :call Send_to_Tmux(@r)<CR>
-
-"neocomplcache
-" imap <C-k> <Plug>(neocomplcache_snippets_expand)
-" smap <C-k> <Plug>(neocomplcache_snippets_expand)
-" inoremap <expr><C-g> neocomplcache#undo_completion()
-" inoremap <expr><C-l> neocomplcache#complete_common_string()
-" inoremap <expr><CR> neocomplcache#smart_close_popup() . "\<CR>"
-" 
-" " <C-h>, <BS>: close popup and delete backword char.
-" inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-" inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-" inoremap <expr><C-y>  neocomplcache#close_popup()
-" inoremap <expr><C-e>  neocomplcache#cancel_popup()
-
-"Gundo
-map <leader>u :GundoToggle<CR>
-
-" Smart grep
-map <Leader>g :TBGS
-map <Leader>w :TBGW<CR>
-
-" let g:ctrlp_map = '<c-p>'
-" let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_working_path_mode = 'ra'
-" let g:ctrlp_use_caching = 1
-" let g:ctrlp_switch_buffer = ''
-" let g:ctrlp_clear_cache_on_exit = 0
-" let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-" let g:ctrlp_extensions = ['tag']
-" map <C-y> :CtrlPMRU<CR>
-
-let g:CommandTMaxFiles=1000000
-let g:CommandTFileScanner='watchman'
-nnoremap <silent> <C-p> :CommandT<CR>
-nnoremap <silent> <C-y> :CommandTBuffer<CR>
-
 "Remove all trailing whitespace
 nnoremap <silent> <F3> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
 "<F8> is autopep8, from plugin
 map <F4> :syntax sync fromstart<CR>
-au FileType python imap <buffer> <F7> import pdb; pdb.set_trace()  # FIXME
-au FileType php imap <buffer> <F7> hphpd_break(); //FIXME
-let g:syntastic_disabled_filetypes=['php']
-
-" Inserts the path of the currently edited file into a command
-" Command mode: Ctrl+P
-cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
 " Match tmux
 noremap <c-w><c-i> :tabprev<cr>
@@ -139,21 +74,6 @@ vnoremap <S-k> k
 "Don't drop select after indent
 vnoremap > >gv
 vnoremap < <gv
-
-"************************"
-
-" Status line config
-" set statusline=
-" set statusline +=\ %n\ %*            "buffer number
-" set statusline +=venv=%{virtualenv#statusline()}
-" set statusline +=\ %<%F%*            "full path
-" set statusline +=%m%*                "modified flag
-" set statusline+=%=                           " right align
-" set statusline +=%{v:register}
-" set statusline +=%y%*                "file type
-" set statusline +=%l%*                  "current line
-" set statusline +=/%L%*               "total lines
-" set statusline +=\ %c%*             "column number
 
 "************************"
 " Cursor line
@@ -198,10 +118,6 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
 " Status bar
 set laststatus=2
 
-" enable using the mouse if terminal emulator
-" supports it (xterm does)
-set mouse=a
-
 " Eh, swapfiles
 set nobackup
 set noswapfile
@@ -210,12 +126,10 @@ set noswapfile
 set formatoptions=cq textwidth=0 foldignore= wildignore+=*.py[co]
 
 " Python
+au FileType python imap <buffer> <F7> import pdb; pdb.set_trace()  # FIXME
+
 let python_highlight_all = 1
-" let g:pydoc_cmd = "/usr/local/bin/pydoc"
-" let g:pydoc_open_cmd = "vsplit"
-" let g:pydoc_perform_mappings = 0
-"au FileType python,man silent map <buffer> <leader>pd :call ShowPyDoc('<C-R><C-W>', 1)<CR>
-au FileType python set shiftwidth=4 tabstop=8 expandtab
+au FileType python set shiftwidth=4 tabstop=4 expandtab
 let g:virtualenv_auto_activate = 1
 " PyFlakes highlighting
 highlight clear SpellBad highlight SpellBad term=underline cterm=underline gui=underline
@@ -229,10 +143,6 @@ au BufNewFile,BufRead *.cconf set syntax=python
 au BufNewFile,BufRead *.tw set syntax=python
 au BufNewFile,BufRead *.cinc set syntax=python
 au BufRead *.vis so %
-
-let g:NERDCustomDelimiters = {
-    \ 'htmldjango': { 'left': '{% comment %}','right': '{% endcomment %}' },
-    \ }
 
 " load the plugin and indent settings for the detected filetype
 filetype on
@@ -260,25 +170,14 @@ nnoremap j gj
 nnoremap k gk
 
 "Persistent undo
-silent !mkdir -vp ~/.backup/vim/undo/ > /dev/null 2>&1
+silent !mkdir -vp ~/.cache/vim/undo/ > /dev/null 2>&1
 if version >= 703
   set undofile
-  set undodir=~/.backup/vim/undo/,~/tmp,.
+  set undodir=~/.cache/vim/undo/,~/tmp,.
   set colorcolumn:81
 endif
 
 set t_Co=256
-color dave256
-
-function! FindAndEdit(filename)
-  let l:filesplit = split(a:filename, "/")
-  if l:filesplit[0] == "www"
-    let l:filesplit = ["/home/drh/"] + l:filesplit
-  endif
-  execute "edit " . join(l:filesplit, "/")
-endfunction
-
-command! -nargs=1 E :call FindAndEdit('<args>')
 
 ""
 "https://github.com/wincent/wincent/blob/bff9eb90f04b7/.vim/plugin/term.vim
