@@ -20,32 +20,18 @@ export PROMPT_COMMAND="history -a"
 
 alias df='df -h'
 alias du='du -h -c'
-alias mkdir='mkdir -p'
-alias grep='grep --colour'
 alias gist='hub gist create'
-alias wip='git commit -am"wip" --no-verify'
-alias shipit='(pre-commit run --all || pre-commit run --all) && git commit --no-verify -am"$@"'
-alias amend='git add . && (pre-commit run --all || pre-commit run --all) && git commit --amend --no-verify'
-alias sudoshell='PS1="# " aws-okta exec zimride-sudo-developer -- $SHELL'
+alias gistbuffer='tmux save-buffer - | gist'
+alias grep='grep --colour'
+alias ll='ls -al'
+alias mkdir='mkdir -p'
+alias wip='git commit -am"wip"'
 
 function ts {
     echo "START" | command ts "[%Y-%m-%d %H:%M:%S]"
     unbuffer "$@" | command ts "[%Y-%m-%d %H:%M:%S]"
     echo "DONE" | command ts "[%Y-%m-%d %H:%M:%S]"
 }
-
-alias vimlast='cd `git root` && vim -p `git log -n 1 --format="%H" --name-only | tail -n +3`'
-alias vimindex='cd `git root` && vim -p `git status --porcelain | cut -d" " -f3`'
-function __vimgit {
-    echo "`git log $@ -n 1 --color --since=2month --name-only`"
-    FILES=`git log $@ -n 1 --format="%H" --since=2month --name-only | tail -n +3`
-    read -p "Open in VIM (y/n)?" choice
-    case "$choice" in
-        y|Y ) cd `git root` && vim -p `echo "$FILES"`;;
-          * ) ;;
-    esac
-    }
-alias vimgit=__vimgit
 
 function __shortcuts {
   echo "C-b       Back char"
@@ -60,7 +46,7 @@ function __shortcuts {
   echo "C-x C-e   Edit command line in vim"
   echo "A-r       Search this backwards"
 }
-alias shortcuts=__shortcuts
+alias print-shortcuts=__shortcuts
 
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM="xterm-256color"
@@ -76,14 +62,12 @@ function virtualenv() {
 
 function lastcommandfailed() {
   code=$?
-  #echo $code
   if [ $code != 0 ]; then
     echo -n $'\033[37;1m(exited \033[31;1m'
     echo -n $code
     echo -n $'\033[37;1m) '
   fi
 }
-alias gistbuffer='tmux save-buffer - | gist'
 
 function parse_git_dirty {
   status=`git status 2> /dev/null`
