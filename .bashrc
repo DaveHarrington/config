@@ -24,8 +24,16 @@ alias gist='hub gist create'
 alias gistbuffer='tmux save-buffer - | gist'
 alias grep='grep --colour'
 alias ll='ls -al'
+alias l.='ls -d .*'
 alias mkdir='mkdir -p'
 alias wip='git commit -am"wip"'
+
+export LSCOLORS=Exfxcxdxbxegedabagacad # https://unix.stackexchange.com/questions/2897/clicolor-and-ls-colors-in-bash
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  alias ls='ls --color=auto'
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  export CLICOLOR=1
+fi
 
 function ts {
     echo "START" | command ts "[%Y-%m-%d %H:%M:%S]"
