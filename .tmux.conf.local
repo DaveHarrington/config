@@ -332,3 +332,5 @@ unbind-key space
 unbind-key Up
 unbind-key Down
 unbind-key l
+
+set -g default-terminal "xterm-256color"
