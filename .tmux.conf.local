@@ -334,3 +334,11 @@ unbind-key Down
 unbind-key l
 
 set -g default-terminal "xterm-256color"
+
+# SSH Agent forwarding with tmux
+# https://werat.github.io/2017/02/04/tmux-ssh-agent-forwarding.html
+set-environment -g 'SSH_AUTH_SOCK' ~/.ssh/ssh_auth_sock
+
+# Unset Ctrl A as prefix: https://github.com/gpakosz/.tmux/issues/53
+set -gu prefix2
+unbind C-a
