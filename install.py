@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
 import os.path
 import sys
@@ -7,7 +7,7 @@ force = True if '-f' in sys.argv else False
 
 whitelist= ['vim', '.vimrc',
 	'.ackrc', '.bash_profile', '.bashrc', '.gitconfig',
-	'.inputrc', '.tmux.conf', '.hphpdrc.php']
+	'.inputrc', '.tmux.conf', '.tmux.conf.local', '.hphpdrc.php']
 
 for file in whitelist:
 
@@ -17,13 +17,15 @@ for file in whitelist:
 	new = os.path.join(os.environ['HOME'], file)
 
 	if force or os.path.islink(new):
-	    print 'Removing old: ', new
+	    print('Removing old: ', new)
 	    os.remove(new)
 
-	print "Symlinking %s -> %s" % (original, new),
+	print("Symlinking %s -> %s" % (original, new),)
 	try:
 	    os.symlink(original, new)
 	except:
-	    print original, "FAIL"
+	    print(original, "FAIL")
 	else:
-	    print "SUCCESS"
+	    print("SUCCESS")
+
+print("git submodule init && git submodule update")
